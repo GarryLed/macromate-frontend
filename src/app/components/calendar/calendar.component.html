@@ -1,1 +1,61 @@
-<p>calendar works!</p>
+<div class="container mt-4">
+    <h3>Daily Summary</h3>
+  
+    <!-- Date Picker -->
+    <div class="mb-3">
+      <label for="date" class="form-label">Select a date</label>
+      <input type="date" id="date" class="form-control" [(ngModel)]="selectedDate" (change)="loadDayData()">
+    </div>
+  
+    <!-- Summary Cards -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5>Calories</h5>
+            <p class="fw-bold text-danger">{{ summary.totalCalories }} kcal</p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-md-3" *ngFor="let macro of summary.macros">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5>{{ macro.label }}</h5>
+            <p class="fw-bold">{{ macro.amount }} g</p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5>Water</h5>
+            <p class="fw-bold">{{ summary.water }} ml</p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5>Weight</h5>
+            <p class="fw-bold">{{ summary.weight }} kg</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Meal Log -->
+    <div *ngFor="let meal of mealTypes" class="mb-4">
+      <h5>{{ meal }}</h5>
+      <table class="table table-bordered table-striped" *ngIf="logs[meal]?.length; else noData">
+        <thead class="table-light">
+          <tr>
+            <th>Food</th>
+            <th>Serving</th>
+            <th>Calories</th>
+            <th>Protein</th>
+            <th>Carbs</th>
+            <th>Fat
+  

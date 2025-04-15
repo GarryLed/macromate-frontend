@@ -1,1 +1,22 @@
-<p>weight-progress works!</p>
+<div class="container mt-4">
+    <h3>Weight Progress</h3>
+
+    <!-- Summary -->
+
+  
+    <!-- Add Weight Entry -->
+    <form (ngSubmit)="addWeight()" #weightForm="ngForm" class="row g-3 align-items-center">
+      <div class="col-auto">
+        <label for="weight" class="form-label">New Weight (kg)</label>
+        <input type="number" class="form-control" id="weight" required [(ngModel)]="newWeight.value" name="weight">
+      </div>
+      <div class="col-auto">
+        <label for="date" class="form-label">Date</label>
+        <input type="date" class="form-control" id="date" required [(ngModel)]="newWeight.date" name="date">
+      </div>
+      <div class="col-auto mt-4">
+        <button class="btn btn-primary" type="submit" [disabled]="!weightForm.form.valid">Add Entry</button>
+      </div>
+    </form>
+  </div>
+  

@@ -1,1 +1,53 @@
-<p>search works!</p>
+
+
+<div class="container mt-4">
+    <h3>Food Search</h3>
+  
+    <!-- Search Form -->
+    <form (submit)="onSearch()" class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Search for a food..."
+             [(ngModel)]="searchQuery" name="search" required>
+      <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  
+    <!-- Loading -->
+    <div *ngIf="loading" class="text-muted mb-3">Searching...</div>
+  
+    <!-- Error -->
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+  
+    <!-- Search Results -->
+    <div *ngIf="results.length > 0">
+      <table class="table table-bordered table-striped">
+        <thead class="table-light">
+          <tr>
+            <th>Food</th>
+            <th>Serving</th>
+            <th>Calories</th>
+            <th>Protein</th>
+            <th>Carbs</th>
+            <th>Fat</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of results">
+            <td>{{ item.label }}</td>
+            <td>{{ item.servingSize }}</td>
+            <td>{{ item.calories }}</td>
+            <td>{{ item.protein }}</td>
+            <td>{{ item.carbs }}</td>
+            <td>{{ item.fat }}</td>
+            <td>
+              <button class="btn btn-sm btn-success">Add</button> <!-- Future functionality -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <div *ngIf="!loading && results.length === 0 && searchPerformed" class="text-muted">
+      No results found for "{{ searchQuery }}".
+    </div>
+  </div>
+

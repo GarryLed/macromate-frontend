@@ -1,1 +1,75 @@
-<p>meals works!</p>
+<div class="container mt-4">
+    <h3 class="mb-4">Daily Food Log</h3>
+  
+    <!-- Meal Sections -->
+    <div *ngFor="let meal of mealTypes" class="mb-5">
+      <h5 class="border-bottom pb-1 text-uppercase">{{ meal }}</h5>
+  
+      <table class="table table-sm table-bordered" *ngIf="mealLogs[meal]?.length; else noMealData">
+        <thead class="table-light">
+          <tr>
+            <th>Food</th>
+            <th>Serving</th>
+            <th>Calories</th>
+            <th>Protein (g)</th>
+            <th>Carbs (g)</th>
+            <th>Fat (g)</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of mealLogs[meal]; let i = index">
+            <td>{{ item.label }}</td>
+            <td>{{ item.servingSize }}</td>
+            <td>{{ item.calories }}</td>
+            <td>{{ item.protein }}</td>
+            <td>{{ item.carbs }}</td>
+            <td>{{ item.fat }}</td>
+            <td>
+              <button class="btn btn-sm btn-danger" (click)="deleteFoodFromMeal(meal, i)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="table-secondary fw-bold">
+            <td colspan="2">Meal Total</td>
+            <td>{{ getMealTotal(meal, 'calories') }}</td>
+            <td>{{ getMealTotal(meal, 'protein') }}</td>
+            <td>{{ getMealTotal(meal, 'carbs') }}</td>
+            <td>{{ getMealTotal(meal, 'fat') }}</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+  
+      <ng-template #noMealData>
+        <p class="text-muted">No items logged for {{ meal.toLowerCase() }}.</p>
+      </ng-template>
+    </div>
+  
+    <!-- Summary Section -->
+    <div class="card border-primary">
+      <div class="card-body">
+        <h5 class="card-title">Daily Summary</h5>
+        <div class="row text-center">
+          <div class="col">
+            <p class="mb-1 fw-bold">Calories</p>
+            <p>{{ totalCalories }} / {{ goal.calories }} kcal</p>
+          </div>
+          <div class="col">
+            <p class="mb-1 fw-bold">Protein</p>
+            <p>{{ totalMacros.protein }} / {{ proteinTarget }} g</p>
+          </div>
+          <div class="col">
+            <p class="mb-1 fw-bold">Carbs</p>
+            <p>{{ totalMacros.carbs }} / {{ carbsTarget }} g</p>
+          </div>
+          <div class="col">
+            <p class="mb-1 fw-bold">Fat</p>
+            <p>{{ totalMacros.fat }} / {{ fatsTarget }} g</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

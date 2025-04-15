@@ -1,1 +1,52 @@
-<p>goals works!</p>
+<div class="container mt-4">
+    <h3>User Goals</h3>
+    <form (ngSubmit)="saveGoals()" #goalForm="ngForm" class="row g-3">
+  
+      <!-- Calorie Goal -->
+      <div class="col-md-6">
+        <label for="calories" class="form-label">Daily Calorie Target (kcal)</label>
+        <input type="number" id="calories" class="form-control" name="calories"
+               required [(ngModel)]="goal.calories">
+      </div>
+  
+      <!-- Water Intake -->
+      <div class="col-md-6">
+        <label for="water" class="form-label">Daily Water Goal (ml)</label>
+        <input type="number" id="water" class="form-control" name="water"
+               required [(ngModel)]="goal.waterTarget">
+      </div>
+  
+      <!-- Macro Targets -->
+      <div class="col-md-4">
+        <label for="protein" class="form-label">Protein (%)</label>
+        <input type="number" id="protein" class="form-control" name="protein"
+               required [(ngModel)]="goal.proteinPercent">
+      </div>
+  
+      <div class="col-md-4">
+        <label for="carbs" class="form-label">Carbs (%)</label>
+        <input type="number" id="carbs" class="form-control" name="carbs"
+               required [(ngModel)]="goal.carbsPercent">
+      </div>
+  
+      <div class="col-md-4">
+        <label for="fats" class="form-label">Fats (%)</label>
+        <input type="number" id="fats" class="form-control" name="fats"
+               required [(ngModel)]="goal.fatsPercent">
+      </div>
+  
+      <!-- Submit Button -->
+      <div class="col-12">
+        <button class="btn btn-primary" type="submit" [disabled]="!goalForm.form.valid">
+          Save Goals
+        </button>
+      </div>
+    </form>
+  
+    <div class="mt-4" *ngIf="submitted">
+      <div class="alert alert-success">Goals saved successfully!</div>
+    </div>
+  </div>
+
+
+
