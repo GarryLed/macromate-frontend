@@ -1,1 +1,81 @@
-<p>dashboard works!</p>
+<div class="container mt-4">
+    <h2 class="mb-4">Welcome to MacroMate</h2>
+  
+    <!-- Calorie Summary -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Daily Calorie Progress</h4>
+        <div class="progress mb-2">
+          <div class="progress-bar" role="progressbar"
+               [style.width.%]="calorieProgress"
+               [attr.aria-valuenow]="calorieProgress"
+               aria-valuemin="0" aria-valuemax="100">
+            {{ calorieProgress }}%
+          </div>
+        </div>
+        <small>{{ caloriesConsumed }} / {{ calorieGoal }} kcal</small>
+      </div>
+    </div>
+  
+    <!-- Macro Breakdown -->
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <label>Protein</label>
+        <div class="progress">
+          <div class="progress-bar bg-info" [style.width.%]="proteinPercent">{{ proteinPercent }}%</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label>Carbs</label>
+        <div class="progress">
+          <div class="progress-bar bg-warning" [style.width.%]="carbsPercent">{{ carbsPercent }}%</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label>Fats</label>
+        <div class="progress">
+          <div class="progress-bar bg-danger" [style.width.%]="fatsPercent">{{ fatsPercent }}%</div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Weight Chart -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Weight Progress</h4>
+        <!--
+        <canvas baseChart 
+                [data]="weightChartData"
+                [labels]="weightLabels"
+                [options]="weightChartOptions"
+                [type]="'line'">
+        </canvas>
+        -->
+      </div>
+    </div>
+  
+    <!-- Water Tracker -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Water Intake</h4>
+        <div class="progress">
+          <div class="progress-bar bg-primary"
+               [style.width.%]="waterProgress">{{ waterProgress }}%</div>
+        </div>
+        <small>{{ waterConsumed }} / {{ waterGoal }} ml</small>
+      </div>
+    </div>
+  
+    <!-- Badges -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Achievements</h4>
+        <div class="d-flex flex-wrap gap-3">
+          <div *ngFor="let badge of badges" class="badge bg-success p-3 rounded text-white">
+            {{ badge.title }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
