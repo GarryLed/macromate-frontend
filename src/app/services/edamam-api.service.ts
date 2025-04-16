@@ -15,4 +15,5 @@ export class EdamamApiService {
   searchFood(query: string): Observable<IFoodItem[]> {
     return this._http.get<IFoodItem[]>(`${this._siteURL}?q=${encodeURIComponent(query)}`);
   }
+  
 }

@@ -3,10 +3,12 @@ import { FoodItem } from '../../interfaces/food-item';
 import { GoalService, Goal } from '../../services/goal.service';
 import { MealLogService } from '../../services/meal-log.service';
 import { MealLog } from '../../interfaces/meal-log';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-meals',
   standalone: true,
+  imports: [CommonModule],
   templateUrl: './meals.component.html'
 })
 export class MealsComponent {

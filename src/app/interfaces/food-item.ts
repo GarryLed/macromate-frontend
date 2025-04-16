@@ -10,6 +10,7 @@
     fat: number;
     servingSize: string;
     image?: string; 
+    
   }                                 
 
   export class FoodItem implements IFoodItem {
