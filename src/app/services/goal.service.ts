@@ -1,3 +1,7 @@
+// Service to manage user goals for calories, macronutrients, and water intake
+// This service provides methods to get and update user goals.
+// It uses a singleton pattern to ensure that there is only one instance of the service throughout the application.
+
 import { Injectable } from '@angular/core';
 
 export interface Goal {
