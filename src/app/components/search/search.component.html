@@ -1,53 +1,66 @@
-
-
 <div class="container mt-4">
-    <h3>Food Search</h3>
+    <h3>Search for a Food</h3>
   
-    <!-- Search Form -->
-    <form (submit)="onSearch()" class="input-group mb-3">
-      <input type="text" class="form-control" placeholder="Search for a food..."
+    <!-- Search Bar -->
+    <form (submit)="onSearch()" class="input-group mb-4">
+      <input type="text" class="form-control" placeholder="e.g. Chicken, Apple, Rice..."
              [(ngModel)]="searchQuery" name="search" required>
       <button class="btn btn-primary" type="submit">Search</button>
     </form>
   
-    <!-- Loading -->
-    <div *ngIf="loading" class="text-muted mb-3">Searching...</div>
-  
-    <!-- Error -->
-    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-  
-    <!-- Search Results -->
-    <div *ngIf="results.length > 0">
-      <table class="table table-bordered table-striped">
-        <thead class="table-light">
-          <tr>
-            <th>Food</th>
-            <th>Serving</th>
-            <th>Calories</th>
-            <th>Protein</th>
-            <th>Carbs</th>
-            <th>Fat</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of results">
-            <td>{{ item.label }}</td>
-            <td>{{ item.servingSize }}</td>
-            <td>{{ item.calories }}</td>
-            <td>{{ item.protein }}</td>
-            <td>{{ item.carbs }}</td>
-            <td>{{ item.fat }}</td>
-            <td>
-              <button class="btn btn-sm btn-success">Add</button> <!-- Future functionality -->
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="text-center my-3">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-2">Searching...</p>
     </div>
   
+    <!-- Error Message -->
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+  
+    <!-- Food Results -->
+    <div class="row" *ngIf="results.length > 0">
+      <div class="col-md-4 mb-4" *ngFor="let item of results">
+        <div class="card h-100 shadow-sm">
+          <img [src]="item.image || 'https://via.placeholder.com/150'" class="card-img-top" alt="{{ item.label }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ item.label }}</h5>
+            <p class="card-text small text-muted">{{ item.servingSize }}</p>
+  
+            <ul class="list-group list-group-flush mb-3">
+              <li class="list-group-item">Calories: {{ item.calories }}</li>
+              <li class="list-group-item">Protein: {{ item.protein }}g</li>
+              <li class="list-group-item">Carbs: {{ item.carbs }}g</li>
+              <li class="list-group-item">Fat: {{ item.fat }}g</li>
+            </ul>
+  
+            <div class="mb-2">
+                <label for="mealSelect-{{ item.label }}" class="form-label small">Add to:</label>
+                <select class="form-select form-select-sm" [(ngModel)]="item.selectedMeal" name="mealSelect-{{ item.label }}">
+                  <option disabled selected value="">Select a meal</option>
+                  <option *ngFor="let meal of mealTypes" [value]="meal">{{ meal }}</option>
+                </select>
+              </div>
+              
+              <button class="btn btn-success btn-sm w-100"
+                      [disabled]="!item.selectedMeal"
+                      (click)="addToMealLog(item)">
+                Add to Log
+              </button>
+              
+              <div class="text-success mt-2 text-center small" *ngIf="item.added">
+                ✔️ Added to {{ item.selectedMeal }}!
+              </div>
+              
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- No Results -->
     <div *ngIf="!loading && results.length === 0 && searchPerformed" class="text-muted">
-      No results found for "{{ searchQuery }}".
+      No foods found for "{{ searchQuery }}".
     </div>
   </div>
-
+  

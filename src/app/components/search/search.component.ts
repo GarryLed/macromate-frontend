@@ -1,44 +1,68 @@
 import { Component } from '@angular/core';
-import { FoodItem } from '../../interfaces/food-item';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { EdamamApiService } from '../../services/edamam-api.service';
+import { IFoodItem } from '../../interfaces/food-item';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './search.component.html'
 })
 export class SearchComponent {
-  searchQuery = '';
+  searchQuery: string = '';
   loading = false;
   error: string | null = null;
   searchPerformed = false;
 
-  results: FoodItem[] = [];
+  results: (IFoodItem & { selectedMeal?: string; added?: boolean })[] = [];
+  mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
 
-  // Mock search logic (will replace with Edamam API later)
-  onSearch() {
+  // Temp meal log for demo purposes
+  dailyMealLog: { [key: string]: IFoodItem[] } = {
+    Breakfast: [],
+    Lunch: [],
+    Dinner: [],
+    Snack: []
+  };
+
+  constructor(private edamamService: EdamamApiService) {}
+
+  onSearch(): void {
+    if (!this.searchQuery.trim()) return;
+
     this.loading = true;
     this.error = null;
     this.searchPerformed = true;
 
-    setTimeout(() => {
-      // Simulate matching mock data
-      if (this.searchQuery.toLowerCase().includes('apple')) {
-        this.results = [
-          { label: 'Apple, raw', calories: 95, protein: 0.5, carbs: 25, fat: 0.3, servingSize: '1 medium (182g)' },
-          { label: 'Apple juice, unsweetened', calories: 113, protein: 0.2, carbs: 28, fat: 0.2, servingSize: '1 cup (248g)' }
-        ];
-      } else if (this.searchQuery.toLowerCase().includes('chicken')) {
-        this.results = [
-          { label: 'Chicken breast, grilled', calories: 165, protein: 31, carbs: 0, fat: 3.6, servingSize: '100g' }
-        ];
-      } else {
-        this.results = [];
+    this.edamamService.searchFood(this.searchQuery).subscribe({
+      next: (items) => {
+        this.results = items.map(item => ({ ...item }));
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Edamam API error:', err);
+        this.error = 'Failed to fetch food data. Please try again.';
+        this.loading = false;
       }
+    });
+  }
 
-      this.loading = false;
-    }, 800); // Simulate API delay
+  addToMealLog(item: IFoodItem & { selectedMeal?: string; added?: boolean }): void {
+    if (!item.selectedMeal) return;
+
+    const meal = item.selectedMeal;
+    const foodEntry = { ...item } as IFoodItem & { selectedMeal?: string; added?: boolean };
+    delete foodEntry.selectedMeal;
+    delete foodEntry.added;
+
+    this.dailyMealLog[meal].push(foodEntry);
+
+    // Show confirmation
+    item.added = true;
+    setTimeout(() => (item.added = false), 2000);
+
+    console.log(`Added to ${meal}:`, foodEntry);
   }
 }
-

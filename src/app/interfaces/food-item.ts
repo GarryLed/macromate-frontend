@@ -9,6 +9,7 @@
     carbs: number;
     fat: number;
     servingSize: string;
+    image?: string; 
   }                                 
 
   export class FoodItem implements IFoodItem {
@@ -19,14 +20,16 @@
     carbs: number;
     fat: number;
     servingSize: string;
+    image?: string;
 
-    constructor(label:string, calories:number, protein:number, carbs:number, fat:number, servingSize:string) {
+    constructor(label:string, calories:number, protein:number, carbs:number, fat:number, servingSize:string, image?:string) {   
         this.label = label;
         this.calories = calories;
         this.protein = protein;
         this.carbs = carbs;
         this.fat = fat;
         this.servingSize = servingSize;
+        this.image = image;
         }
 }
   
