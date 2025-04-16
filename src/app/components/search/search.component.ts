@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EdamamApiService } from '../../services/edamam-api.service';
 import { IFoodItem } from '../../interfaces/food-item';
+import { MealLogService } from '../../services/meal-log.service';
 
 @Component({
   selector: 'app-search',
@@ -27,7 +28,7 @@ export class SearchComponent {
     Snack: []
   };
 
-  constructor(private edamamService: EdamamApiService) {}
+  constructor(private edamamService: EdamamApiService, private mealLogService: MealLogService) {}
 
   onSearch(): void {
     if (!this.searchQuery.trim()) return;
@@ -57,7 +58,8 @@ export class SearchComponent {
     delete foodEntry.selectedMeal;
     delete foodEntry.added;
 
-    this.dailyMealLog[meal].push(foodEntry);
+    this.mealLogService.addFoodToMeal(meal, foodEntry);
+
 
     // Show confirmation
     item.added = true;

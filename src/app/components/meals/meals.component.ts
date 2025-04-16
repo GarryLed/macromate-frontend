@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FoodItem } from '../../interfaces/food-item';
 import { GoalService, Goal } from '../../services/goal.service';
+import { MealLogService } from '../../services/meal-log.service';
+import { MealLog } from '../../interfaces/meal-log';
 
 @Component({
   selector: 'app-meals',
@@ -9,12 +11,14 @@ import { GoalService, Goal } from '../../services/goal.service';
 })
 export class MealsComponent {
   mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
-  mealLogs: { [mealType: string]: FoodItem[] } = { /* same mock data */ };
+  mealLogs: { [mealType: string]: FoodItem[] } = { /* add mock data */ };
 
   goal: Goal;
+ 
 
-  constructor(private goalService: GoalService) {
+  constructor(private goalService: GoalService, private mealLogService: MealLogService) {
     this.goal = this.goalService.getGoal();
+    this.mealLogs = this.mealLogService.getMealLog();
   }
 
   // Helper to get total per meal per macro type
@@ -62,6 +66,11 @@ export class MealsComponent {
   }
 
   deleteFoodFromMeal(meal: string, index: number) {
-    this.mealLogs[meal].splice(index, 1);
+    this.mealLogService.deleteFoodFromMeal(meal, index);
   }
+
+  clearMeal(meal: string) {
+    this.mealLogService.clearMeal(meal); 
+  } 
 }
+
