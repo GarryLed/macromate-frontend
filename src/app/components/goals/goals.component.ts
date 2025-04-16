@@ -9,10 +9,12 @@ import { GoalService } from '../../services/goal.service';
   templateUrl: './goals.component.html'
 })
 export class GoalsComponent {
-  goal = this.goalService.getGoal();
+  goal: any;
   submitted = false;
 
-  constructor(private goalService: GoalService) {}
+  constructor(private goalService: GoalService) {
+    this.goal = this.goalService.getGoal();
+  }
 
   saveGoals() {
     this.goalService.updateGoal(this.goal);
