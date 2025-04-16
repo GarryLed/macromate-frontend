@@ -1,50 +1,28 @@
 import { Component } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
-import { ChartConfiguration, ChartType } from 'chart.js';
-import { NgChartsConfiguration } from 'ng2-charts';
+import { WeightChartComponent } from '../weight-chart/weight-chart.component';  
+import { MacroChartComponent } from '../macro-chart/macro-chart.component';
+import { WaterChartComponent } from '../water-chart/water-chart.component';
+import { CaloriesChartComponent } from '../calories-chart/calories-chart.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NgIf, NgFor],
-  templateUrl: './dashboard.component.html',
+  imports: [
+    CommonModule,
+    WeightChartComponent,
+    MacroChartComponent,
+    WaterChartComponent,
+    CaloriesChartComponent
+  ],
+  templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent {
-  calorieGoal = 2000;
-  caloriesConsumed = 1500;
-  calorieProgress = Math.round((this.caloriesConsumed / this.calorieGoal) * 100);
-
-  proteinPercent = 40;
-  carbsPercent = 35;
-  fatsPercent = 25;
-
-  waterGoal = 3000;
-  waterConsumed = 2200;
-  waterProgress = Math.round((this.waterConsumed / this.waterGoal) * 100);
-
-  badges = [
-    { title: '3-Day Streak' },
-    { title: 'Hydration Hero' },
-    { title: 'Consistent Logger' },
-  ];
-
   weightLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
-  weightChartData: ChartConfiguration<'line'>['data'] = {
-    labels: this.weightLabels,
-    datasets: [
-      {
-        data: [80.5, 80.2, 79.8, 79.5, 79.0],
-        label: 'Weight (kg)',
-        borderColor: '#007bff',
-        tension: 0.4,
-        fill: false,
-      },
-    ]
-  };
+  weightData = [80.5, 80.3, 80.1, 79.8, 79.5];
 
-  weightChartOptions: ChartConfiguration<'line'>['options'] = {
-    responsive: true,
-    maintainAspectRatio: false
-  };
+  macroData = [160, 220, 60]; // P, C, F
+  waterData = [2500, 3000, 2000, 2800, 2600];
+  calorieData = [1800, 2000, 1900, 2100, 1950];
 }
 
