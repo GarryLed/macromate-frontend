@@ -12,10 +12,10 @@ export interface ICalendarDay {
     water: number;
     weight: number;
     meals: {
-        breakfast: IFoodItem[];
-        lunch: IFoodItem[];
-        dinner: IFoodItem[];
-        snack: IFoodItem[];
+        breakfast: IFoodItem[]; // Array of food items for breakfast
+        lunch: IFoodItem[]; // Array of food items for lunch
+        dinner: IFoodItem[]; // Array of food items for dinner
+        snack: IFoodItem[]; // Array of food items for snack
         };
 }
 
