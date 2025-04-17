@@ -1,28 +1,51 @@
 import { Component } from '@angular/core';
-import { WeightChartComponent } from '../weight-chart/weight-chart.component';  
-import { MacroChartComponent } from '../macro-chart/macro-chart.component';
-import { WaterChartComponent } from '../water-chart/water-chart.component';
-import { CaloriesChartComponent } from '../calories-chart/calories-chart.component';
 import { CommonModule } from '@angular/common';
+
+// Import all dashboard section components
+import { CalorieProgressComponent } from './calorie-progress.component';
+import { MealOverviewComponent } from './meal-overview.component';
+import { WeightOverviewComponent } from './weight-overview.component';
+import { WaterTrackerComponent } from './water-tracker.component';
+import { AchievementsComponent } from './achievements.component';
+import { QuickLinksComponent } from './quick-links.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
     CommonModule,
-    WeightChartComponent,
-    MacroChartComponent,
-    WaterChartComponent,
-    CaloriesChartComponent
+    CalorieProgressComponent,
+    MealOverviewComponent,
+    WeightOverviewComponent,
+    WaterTrackerComponent,
+    AchievementsComponent,
+    QuickLinksComponent
   ],
-  templateUrl: './dashboard.component.html'
+  templateUrl: './dashboard.component.html',
+  //styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
-  weightLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
-  weightData = [80.5, 80.3, 80.1, 79.8, 79.5];
+  // Example values – these could eventually come from services
 
-  macroData = [160, 220, 60]; // P, C, F
-  waterData = [2500, 3000, 2000, 2800, 2600];
-  calorieData = [1800, 2000, 1900, 2100, 1950];
+  caloriesConsumed = 1450;
+  calorieGoal = 2000;
+
+  mealStatus = {
+    Breakfast: true,
+    Lunch: false,
+    Dinner: true,
+    Snack: false
+  };
+
+  currentWeight = 79.6;
+  startingWeight = 85.0;
+
+  waterDrank = 1800;
+  waterGoal = 3000;
+
+  achievements = [
+    'Logged 3 Meals',
+    'Weighed In',
+    'Hit Water Goal'
+  ];
 }
-

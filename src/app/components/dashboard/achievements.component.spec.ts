@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WeightChartComponent } from './weight-chart.component';
+import { AchievementsComponent } from './achievements.component';
 
-describe('WeightChartComponent', () => {
-  let component: WeightChartComponent;
-  let fixture: ComponentFixture<WeightChartComponent>;
+describe('AchievementsComponent', () => {
+  let component: AchievementsComponent;
+  let fixture: ComponentFixture<AchievementsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [WeightChartComponent]
+      imports: [AchievementsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(WeightChartComponent);
+    fixture = TestBed.createComponent(AchievementsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

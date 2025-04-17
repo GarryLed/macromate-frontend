@@ -1,0 +1,16 @@
+<div class="card h-100 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title mb-3">Daily Calorie Progress</h5>
+  
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="fw-semibold">{{ progressLabel }}</span>
+        <span class="small text-muted">{{ progress | number: '1.0-0' }}%</span>
+      </div>
+  
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar {{ progressColor }}" [style.width.%]="progress"></div>
+      </div>
+    </div>
+  </div>
+  
+  

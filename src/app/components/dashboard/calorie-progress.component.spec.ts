@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MacroChartComponent } from './macro-chart.component';
+import { CalorieProgressComponent } from './calorie-progress.component';
 
-describe('MacroChartComponent', () => {
-  let component: MacroChartComponent;
-  let fixture: ComponentFixture<MacroChartComponent>;
+describe('CalorieProgressComponent', () => {
+  let component: CalorieProgressComponent;
+  let fixture: ComponentFixture<CalorieProgressComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MacroChartComponent]
+      imports: [CalorieProgressComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MacroChartComponent);
+    fixture = TestBed.createComponent(CalorieProgressComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

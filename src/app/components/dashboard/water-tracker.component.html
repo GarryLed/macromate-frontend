@@ -1,0 +1,16 @@
+<div class="card h-100 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title mb-3">Water Intake</h5>
+  
+      <p class="mb-1">{{ waterDrank }} / {{ waterGoal }} ml</p>
+  
+      <div class="progress mb-2">
+        <div class="progress-bar bg-info" [style.width.%]="progress">
+          {{ progress | number: '1.0-0' }}%
+        </div>
+      </div>
+  
+      <button class="btn btn-info btn-sm" (click)="addGlass()">+ Add Glass (250ml)</button>
+    </div>
+  </div>
+  

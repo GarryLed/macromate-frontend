@@ -1,0 +1,14 @@
+<div class="card h-100 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title mb-3">Weight Overview</h5>
+  
+      <div class="mb-2">
+        <p class="mb-1"><strong>Current:</strong> {{ currentWeight }} kg</p>
+        <p class="mb-1"><strong>Starting:</strong> {{ startingWeight }} kg</p>
+        <p class="mb-0" [ngClass]="weightDeltaColor">{{ weightDeltaDisplay }}</p>
+      </div>
+  
+      <button class="btn btn-outline-dark btn-sm mt-3" (click)="weighIn()">Weigh In</button>
+    </div>
+  </div>
+  

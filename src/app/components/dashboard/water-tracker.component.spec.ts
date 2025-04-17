@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CaloriesChartComponent } from './calories-chart.component';
+import { WaterTrackerComponent } from './water-tracker.component';
 
-describe('CaloriesChartComponent', () => {
-  let component: CaloriesChartComponent;
-  let fixture: ComponentFixture<CaloriesChartComponent>;
+describe('WaterTrackerComponent', () => {
+  let component: WaterTrackerComponent;
+  let fixture: ComponentFixture<WaterTrackerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CaloriesChartComponent]
+      imports: [WaterTrackerComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CaloriesChartComponent);
+    fixture = TestBed.createComponent(WaterTrackerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

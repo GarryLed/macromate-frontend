@@ -1,0 +1,20 @@
+<div class="card h-100 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title mb-3">Meals Logged</h5>
+  
+      <div class="d-flex flex-wrap gap-3 mb-3">
+        <div *ngFor="let meal of ['Breakfast', 'Lunch', 'Dinner', 'Snack']" class="d-flex align-items-center gap-2">
+          <span class="fw-medium">{{ meal }}:</span>
+          <span [ngClass]="mealsLogged[meal] ? 'text-success' : 'text-muted'">
+            {{ mealsLogged[meal] ? 'yes' : '—' }}
+          </span>
+        </div>
+      </div>
+  
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-primary btn-sm" (click)="onAddFood()">Add Food</button>
+        <a routerLink="/meals" class="btn btn-primary btn-sm">View Meals</a>
+      </div>
+    </div>
+  </div>
+  

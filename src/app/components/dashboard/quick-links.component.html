@@ -1,0 +1,15 @@
+<div class="card h-100 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title mb-3">Quick Links</h5>
+  
+      <div class="d-grid gap-2">
+        <a *ngFor="let link of links"
+           [routerLink]="link.route"
+           class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2 justify-content-center">
+          <span>{{ link.icon }}</span>
+          <span>{{ link.label }}</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  

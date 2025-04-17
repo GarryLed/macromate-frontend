@@ -1,22 +1,45 @@
 <div class="container mt-4">
-    <h3 class="mb-4">My Dashboard</h3>
-  
-    <div class="row g-4">
-      <div class="col-md-6">
-        <app-weight-chart [labels]="weightLabels" [data]="weightData"></app-weight-chart>
-      </div>
-  
-      <div class="col-md-6">
-        <app-macro-chart [data]="macroData"></app-macro-chart>
-      </div>
-  
-      <div class="col-md-6">
-        <app-water-chart [labels]="weightLabels" [data]="waterData"></app-water-chart>
-      </div>
-  
-      <div class="col-md-6">
-        <app-calories-chart [labels]="weightLabels" [data]="calorieData"></app-calories-chart>
-      </div>
+  <div class="row g-4">
+
+    <!-- Calories -->
+    <div class="col-md-6">
+      <app-calorie-progress></app-calorie-progress>
     </div>
+
+    <!-- Meals Logged -->
+    <div class="col-md-6">
+      <app-meal-overview [mealsLogged]="mealStatus"></app-meal-overview>
+
+    </div>
+
+    <!-- Weight -->
+    <div class="col-md-6">
+      <app-weight-overview
+        [currentWeight]="currentWeight"
+        [startingWeight]="startingWeight">
+      </app-weight-overview>
+
+    </div>
+
+    <!-- Water -->
+    <div class="col-md-6">
+      <app-water-tracker
+        [waterDrank]="waterDrank"
+        [waterGoal]="waterGoal">
+      </app-water-tracker>
+    </div>
+
+    <!-- Achievements -->
+    <div class="col-md-6">
+      <app-achievements
+        [achievements]="achievements">
+      </app-achievements>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="col-md-6">
+      <app-quick-links></app-quick-links>
+    </div>
+
   </div>
-  
+</div>
