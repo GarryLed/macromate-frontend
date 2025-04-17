@@ -2,6 +2,7 @@
     <h3>Nutrition Goals</h3>
     <form (ngSubmit)="saveGoals()" #goalForm="ngForm" class="row g-3">
   
+      <!-- will wrap these form entries in a card style -->
       <!-- Calorie Goal -->
       <div class="col-md-6">
         <label for="calories" class="form-label">Daily Calorie Target (kcal)</label>
@@ -48,7 +49,7 @@
     </div>
   </div>
   
-  <!-- Weight goals-->
+  <!-- Weight goals section -->
    <div class="container mt-4">
        <h3>Weight Goals</h3> 
     <app-weight-goal></app-weight-goal>

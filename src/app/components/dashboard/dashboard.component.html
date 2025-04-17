@@ -1,18 +1,19 @@
 <div class="container mt-4">
   <div class="row g-4">
 
-    <!-- Calories -->
+    <!-- Calories section -->
     <div class="col-md-6">
       <app-calorie-progress></app-calorie-progress>
+      <!-- will add protein, carbs and fats percentages here -->
     </div>
 
-    <!-- Meals Logged -->
+    <!-- Meals Logged section -->
     <div class="col-md-6">
       <app-meal-overview [mealsLogged]="mealStatus"></app-meal-overview>
 
     </div>
 
-    <!-- Weight -->
+    <!-- Weight section -->
     <div class="col-md-6">
       <app-weight-overview
         [currentWeight]="currentWeight"
@@ -21,7 +22,7 @@
 
     </div>
 
-    <!-- Water -->
+    <!-- Water intake section -->
     <div class="col-md-6">
       <app-water-tracker
         [waterDrank]="waterDrank"
@@ -29,14 +30,14 @@
       </app-water-tracker>
     </div>
 
-    <!-- Achievements -->
+    <!-- Achievements section -->
     <div class="col-md-6">
       <app-achievements
         [achievements]="achievements">
       </app-achievements>
     </div>
 
-    <!-- Quick Links -->
+    <!-- Quick Links section -->
     <div class="col-md-6">
       <app-quick-links></app-quick-links>
     </div>

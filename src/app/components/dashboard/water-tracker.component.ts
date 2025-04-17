@@ -9,8 +9,8 @@ import { CommonModule } from '@angular/common';
  // styleUrls: ['./water-tracker.component.scss']
 })
 export class WaterTrackerComponent {
-  @Input() waterDrank: number = 0;        // e.g. 1800 ml
-  @Input() waterGoal: number = 3000;      // e.g. 3000 ml
+  @Input() waterDrank: number = 0;        
+  @Input() waterGoal: number = 3000;      
   readonly glassSize = 250;               // One glass = 250 ml
 
   get progress(): number {

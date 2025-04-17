@@ -18,12 +18,21 @@ export class MealsComponent {
   goal: Goal;
  
 
+  // constructor to inject the goal and meal log services
+  // and initialize the goal and meal logs
   constructor(private goalService: GoalService, private mealLogService: MealLogService) {
     this.goal = this.goalService.getGoal();
     this.mealLogs = this.mealLogService.getMealLog();
   }
 
-  // Helper to get total per meal per macro type
+  /*
+  // Helper to get total macros for a specific meal
+  // This function takes a meal type (e.g., 'Breakfast') and a macro type (e.g., 'protein')
+  // and returns the total amount of that macro for the specified meal.
+  // It uses the mealLogs object to find the corresponding meal and sums up the macro values of all food items in that meal.
+
+
+  */
   getMealTotal(meal: string, macro: keyof FoodItem): number {
     return this.mealLogs[meal]?.reduce((sum, item) => sum + (typeof item[macro] === 'number' ? item[macro] : 0), 0) || 0;
   }

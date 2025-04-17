@@ -11,10 +11,10 @@ import { RouterModule } from '@angular/router';
 })
 export class QuickLinksComponent {
   links = [
-    { label: 'Goals', route: '/goals', icon: '🎯' },
-    { label: 'Meals', route: '/meals', icon: '🍽️' },
-    { label: 'Calendar', route: '/calendar', icon: '📅' },
-    { label: 'Search', route: '/search', icon: '🔍' }
+    { label: 'Goals', route: '/goals'},
+    { label: 'Meals', route: '/meals'},
+    { label: 'Calendar', route: '/calendar' },
+    { label: 'Search', route: '/search' }
   ];
 }
 

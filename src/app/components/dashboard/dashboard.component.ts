@@ -25,11 +25,13 @@ import { QuickLinksComponent } from './quick-links.component';
   //styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
-  // Example values – these could eventually come from services
+  // placeholder data for the dashboard (will be replaced with actual data from the backend)
 
+  // calories section data 
   caloriesConsumed = 1450;
   calorieGoal = 2000;
 
+  // meals section data
   mealStatus = {
     Breakfast: true,
     Lunch: false,
@@ -37,12 +39,15 @@ export class DashboardComponent {
     Snack: false
   };
 
+  // weight section data
   currentWeight = 79.6;
   startingWeight = 85.0;
 
+  // water section data
   waterDrank = 1800;
   waterGoal = 3000;
 
+  // achievements section data
   achievements = [
     'Logged 3 Meals',
     'Weighed In',

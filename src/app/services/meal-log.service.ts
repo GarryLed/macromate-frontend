@@ -7,6 +7,7 @@ import { IFoodItem } from '../interfaces/food-item';
 export class MealLogService {
   private localStorageKey = 'macromate-meal-log';
 
+  
   private mealLog: { [meal: string]: IFoodItem[] } = {
     Breakfast: [],
     Lunch: [],
