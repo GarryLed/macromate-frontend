@@ -37,10 +37,14 @@ export class MealsComponent {
     return this.mealLogs[meal]?.reduce((sum, item) => sum + (typeof item[macro] === 'number' ? item[macro] : 0), 0) || 0;
   }
 
+
+  // Getter methods 
+  // get the total calories 
   get totalCalories(): number {
     return this.getAllFoods().reduce((sum, item) => sum + item.calories, 0);
   }
 
+  // get the total macros for all meals
   get totalMacros() {
     const all = this.getAllFoods();
     return {
@@ -50,7 +54,7 @@ export class MealsComponent {
     };
   }
 
-  // Calculate daily macro targets (g) based on % of calories
+  // get protein, carbs, and fats targets based on the goal
   get proteinTarget(): number {
     return this.gramsFromPercent(this.goal.proteinPercent);
   }
@@ -64,22 +68,30 @@ export class MealsComponent {
   }
 
   // Helpers
+  // calculate the grams from the percentage of protein, carbs and fats consumed 
+  // based on the total calories and the kcal per gram (default is 4 kcal/g) which is the standard for protein and carbs
+  // for the fats, I used 9 kcal/g (because fat has more calories per gram)
+
   private gramsFromPercent(percent: number, kcalPerGram = 4): number {
     return Math.round((percent / 100) * this.goal.calories / kcalPerGram);
   }
 
+  // get all food items from all meals
   private getAllFoods(): FoodItem[] {
     return Object.values(this.mealLogs).flat();
   }
 
+  // sum the macros for all food items in a meal
   private sumMacro(items: FoodItem[], macro: 'protein' | 'carbs' | 'fat'): number {
     return items.reduce((sum, item) => sum + item[macro], 0);
   }
 
+  // delete a food item from a specific meal
   deleteFoodFromMeal(meal: string, index: number) {
     this.mealLogService.deleteFoodFromMeal(meal, index);
   }
 
+  // clear entire meal log for a specific meal
   clearMeal(meal: string) {
     this.mealLogService.clearMeal(meal); 
   } 
