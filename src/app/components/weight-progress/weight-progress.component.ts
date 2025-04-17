@@ -1,91 +1,51 @@
-import { Component } from '@angular/core';
-import { ChartConfiguration } from 'chart.js';
-import { FormsModule } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { WeightGoalService } from '../../services/weight-goal.service';
 
 @Component({
   selector: 'app-weight-progress',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule],
   templateUrl: './weight-progress.component.html',
+ // styleUrls: ['./weight-progress.component.scss']
 })
-export class WeightProgressComponent {
-  weightEntries: { date: string; value: number }[] = [
-    { date: '2025-04-10', value: 80.5 },
-    { date: '2025-04-11', value: 80.2 },
-    { date: '2025-04-12', value: 79.9 },
-    { date: '2025-04-13', value: 79.6 }
-  ];
+export class WeightProgressComponent implements OnInit {
+  @Input() currentWeight: number = 0;
+  @Input() startingWeight: number = 85; // hardcoded for now, but will be set by the user 
+  @Input() targetWeight: number | null = null;
+  
 
-  newWeight = { date: '', value: 0 };
+  constructor(private weightGoalService: WeightGoalService) {}
 
-  get weightChartData(): ChartConfiguration<'line'>['data'] {
-    return {
-      labels: this.weightEntries.map(e => e.date),
-      datasets: [
-        {
-          data: this.weightEntries.map(e => e.value),
-          label: 'Weight (kg)',
-          borderColor: '#007bff',
-          backgroundColor: 'rgba(0,123,255,0.1)',
-          fill: true,
-          tension: 0.3
-        }
-      ]
-    };
+  ngOnInit(): void {
+    this.weightGoalService.currentWeight$.subscribe(w => this.currentWeight = w ?? 0);
+    this.weightGoalService.targetWeight$.subscribe(t => this.targetWeight = t);
   }
 
-  chartOptions: ChartConfiguration<'line'>['options'] = {
-    responsive: true,
-    plugins: {
-      legend: { display: true },
-    },
-    scales: {
-      x: { title: { display: true, text: 'Date' } },
-      y: { title: { display: true, text: 'Weight (kg)' } }
-    }
-  };
-
-  addWeight() {
-    const newEntry = {
-      date: this.newWeight.date,
-      value: this.newWeight.value
-    };
-    this.weightEntries.push(newEntry);
-    this.newWeight = { date: '', value: 0 };
+  // This is the weight lost from the starting weight to the current weight
+  get weightLost(): number {
+    return this.startingWeight - this.currentWeight;
   }
 
-  /*
-  get bmi(): number {
-    const latest = this.weightEntries[this.weightEntries.length - 1];
-    if (!latest) return 0;
-    return latest.value / (this.userHeightM * this.userHeightM);
-  }
-  
-  get bmiStatus(): string {
-    const bmi = this.bmi;
-    if (bmi < 18.5) return 'Underweight';
-    if (bmi < 25) return 'Normal';
-    if (bmi < 30) return 'Overweight';
-    return 'Obese';
+  // target weight 
+  get hasTarget(): boolean {
+    return this.targetWeight !== null;
   }
 
-  get trendText(): string {
-    if (this.weightEntries.length < 2) return 'Not enough data yet';
-  
-    const recent = this.weightEntries[this.weightEntries.length - 1];
-    const past = this.weightEntries[0]; // or pick an earlier one (e.g., 7 days ago)
-  
-    const diff = recent.value - past.value;
-    const absDiff = Math.abs(diff).toFixed(1);
-  
-    if (diff < -0.2) return `You’ve lost ${absDiff} kg since ${past.date}.`;
-    if (diff > 0.2) return `You’ve gained ${absDiff} kg since ${past.date}.`;
-    return 'Weight is stable.';
+  // how much weight is left to lose 
+  get distanceToTarget(): number {
+    return this.hasTarget ? Math.abs(this.currentWeight - (this.targetWeight ?? 0)) : 0;
   }
-  */
-  
-  
+
+  get goalDirection(): 'loss' | 'gain' {
+    return this.hasTarget && this.currentWeight > this.targetWeight! ? 'loss' : 'gain';
+  }
+
+  get goalMessage(): string {
+    if (!this.hasTarget) return '';
+    const delta = this.distanceToTarget.toFixed(1);
+    return this.goalDirection === 'loss'
+      ? `You're ${delta} kg away from your goal weight`
+      : `You need to gain ${delta} kg to reach your target`;
+  }
 }
-
-
-

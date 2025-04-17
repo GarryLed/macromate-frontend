@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { WeightGoalService } from '../../services/weight-goal.service';
 
 @Component({
   selector: 'app-weight-goal',
@@ -10,21 +11,27 @@ import { FormsModule } from '@angular/forms';
  // styleUrls: ['./weight-goal.component.scss']
 })
 export class WeightGoalComponent {
+
+  constructor(private weightGoalService: WeightGoalService) {} // Injecting the weightgoal service
+
   currentWeight: number | null = null;
   targetWeight: number | null = null;
 
   saveWeightGoals(): void {
-    console.log('Saved weight goals:', {
-      currentWeight: this.currentWeight,
-      targetWeight: this.targetWeight
-    });
-
-    // TODO: Call service to save to DB
+    if (this.currentWeight !== null) {
+      this.weightGoalService.setCurrentWeight(this.currentWeight);
+    }
+    if (this.targetWeight !== null) {
+      this.weightGoalService.setTargetWeight(this.targetWeight);
+    }
+  
+    console.log('Weight goals saved!');
   }
-
+  
   clearWeightGoals(): void {
     this.currentWeight = null;
     this.targetWeight = null;
+    this.weightGoalService.clearGoals();
   }
 }
 

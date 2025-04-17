@@ -1,22 +1,29 @@
+<!-- Weight Progress Card -->
+
 <div class="container mt-4">
-    <h3>Weight Progress</h3>
-
-    <!-- Summary -->
-
+  <h3>Weight Progress</h3>
+  <div class="card h-100 shadow-sm">
+    <div class="card-body">
+      
   
-    <!-- Add Weight Entry -->
-    <form (ngSubmit)="addWeight()" #weightForm="ngForm" class="row g-3 align-items-center">
-      <div class="col-auto">
-        <label for="weight" class="form-label">New Weight (kg)</label>
-        <input type="number" class="form-control" id="weight" required [(ngModel)]="newWeight.value" name="weight">
-      </div>
-      <div class="col-auto">
-        <label for="date" class="form-label">Date</label>
-        <input type="date" class="form-control" id="date" required [(ngModel)]="newWeight.date" name="date">
-      </div>
-      <div class="col-auto mt-4">
-        <button class="btn btn-primary" type="submit" [disabled]="!weightForm.form.valid">Add Entry</button>
-      </div>
-    </form>
+      <p class="mb-1"><strong>Starting Weight:</strong> {{ startingWeight }} kg</p>
+      <p class="mb-1"><strong>Current Weight:</strong> {{ currentWeight }} kg</p>
+      <p class="mb-2 text-success"><strong>Weight Lost:</strong> {{ weightLost | number:'1.1-1' }} kg</p>
+  
+      <ng-container *ngIf="hasTarget">
+        <hr />
+        <p class="mb-1"><strong>Target Weight:</strong> {{ targetWeight }} kg</p>
+        <p class="text-muted small">{{ goalMessage }}</p>
+      </ng-container>
+    </div>
   </div>
-  
+</div>
+
+<!-- Weight progress chart  -->
+<div class="container mt-4">
+  <h3>Weight Progress Chart</h3>
+  <div class="card h-100 shadow-sm">
+    <div class="card-body">
+      <canvas id="weightProgressChart"></canvas>
+    </div>
+  </div>
