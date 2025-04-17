@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GoalService } from '../../services/goal.service';
+import { CommonModule } from '@angular/common';
+import { WeightGoalComponent } from './weight-goal.component';
 
 @Component({
   selector: 'app-goals',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule, WeightGoalComponent],
   templateUrl: './goals.component.html'
 })
 export class GoalsComponent {

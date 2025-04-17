@@ -1,0 +1,21 @@
+<div class="card h-100 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title mb-3">Weight Goals</h5>
+  
+      <div class="mb-3">
+        <label for="currentWeight" class="form-label">Current Weight (kg)</label>
+        <input type="number" id="currentWeight" class="form-control" [(ngModel)]="currentWeight" min="0">
+      </div>
+  
+      <div class="mb-3">
+        <label for="targetWeight" class="form-label">Target Weight (kg)</label>
+        <input type="number" id="targetWeight" class="form-control" [(ngModel)]="targetWeight" min="0">
+      </div>
+  
+      <div class="d-flex gap-2">
+        <button class="btn btn-success btn-sm" (click)="saveWeightGoals()">Save Weight</button>
+        <button class="btn btn-outline-danger btn-sm" (click)="clearWeightGoals()">Clear</button>
+      </div>
+    </div>
+  </div>
+  

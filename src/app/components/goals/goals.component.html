@@ -1,5 +1,5 @@
 <div class="container mt-4">
-    <h3>User Goals</h3>
+    <h3>Nutrition Goals</h3>
     <form (ngSubmit)="saveGoals()" #goalForm="ngForm" class="row g-3">
   
       <!-- Calorie Goal -->
@@ -47,6 +47,12 @@
       <div class="alert alert-success">Goals saved successfully!</div>
     </div>
   </div>
-
+  
+  <!-- Weight goals-->
+   <div class="container mt-4">
+       <h3>Weight Goals</h3>
+       
+    <app-weight-goal></app-weight-goal>
+   </div>
 
 
