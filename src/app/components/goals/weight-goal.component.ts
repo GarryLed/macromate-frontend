@@ -16,6 +16,7 @@ export class WeightGoalComponent {
 
   currentWeight: number | null = null;
   targetWeight: number | null = null;
+  weightSaved = false; // Flag to track if the form has been submitted
 
   saveWeightGoals(): void {
     if (this.currentWeight !== null) {
@@ -25,6 +26,7 @@ export class WeightGoalComponent {
       this.weightGoalService.setTargetWeight(this.targetWeight);
     }
   
+    this.weightSaved = true; // Set the submitted flag to true
     console.log('Weight goals saved!');
   }
   

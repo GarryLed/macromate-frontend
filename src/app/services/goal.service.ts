@@ -3,33 +3,22 @@
 // It uses a singleton pattern to ensure that there is only one instance of the service throughout the application.
 
 import { Injectable } from '@angular/core';
-
-export interface Goal {
-  calories: number;
-  proteinPercent: number;
-  carbsPercent: number;
-  fatsPercent: number;
-  waterTarget: number;
-}
+import { HttpClient } from '@angular/common/http';
+import { Goal } from '../interfaces/goal'; // Assuming you have a Goal interface defined
 
 @Injectable({
   providedIn: 'root'
 })
 export class GoalService {
-  private goal: Goal = {
-    calories: 2000,
-    proteinPercent: 40,
-    carbsPercent: 40,
-    fatsPercent: 20,
-    waterTarget: 3000
-  };
+  private apiUrl = 'http://localhost:5050/goals';
 
-  getGoal(): Goal {
-    return this.goal;
+  constructor(private http: HttpClient) {}
+
+  saveGoals(goal: any) {
+    return this.http.post<Goal>(this.apiUrl, goal);
   }
 
-  updateGoal(updated: Goal): void {
-    this.goal = { ...updated };
+  getGoals() {
+    return this.http.get<Goal>(this.apiUrl);
   }
 }
-

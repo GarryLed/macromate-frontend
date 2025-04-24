@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IFoodItem } from '../interfaces/food-item';
 
@@ -14,6 +14,12 @@ export class EdamamApiService {
   // Search for food by name, via Express backend
   searchFood(query: string): Observable<IFoodItem[]> {
     return this._http.get<IFoodItem[]>(`${this._siteURL}?q=${encodeURIComponent(query)}`);
+  }
+
+  
+  private handleError (err:HttpErrorResponse) {
+    console.log('EdamamApiService: ' + err.message);
+    return err.message;
   }
   
 }

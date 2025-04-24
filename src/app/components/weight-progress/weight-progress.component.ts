@@ -10,7 +10,7 @@ import { WeightGoalService } from '../../services/weight-goal.service';
  // styleUrls: ['./weight-progress.component.scss']
 })
 export class WeightProgressComponent implements OnInit {
-  // @Input properties
+  // @Input decorator allows passing data from parent component
   @Input() currentWeight: number = 0;
   @Input() startingWeight: number = 85; // hardcoded for now, but will be set by the user 
   @Input() targetWeight: number | null = null;

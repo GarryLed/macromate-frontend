@@ -24,7 +24,7 @@ export interface IWeightEntry {
     }
 
     
-    // Method to convert weight to kilograms
+    // Method to calculate weight in kg or lb based on the unit property
     get weightInKg(): number {
         return this.unit === 'kg' ? this.weight : this.weight * 0.453592;
       }
