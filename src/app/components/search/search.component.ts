@@ -3,7 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EdamamApiService } from '../../services/edamam-api.service';
 import { IFoodItem } from '../../interfaces/food-item';
-import { MealLogService } from '../../services/meal-log.service';
+import { MealLogService } from '../../services/meal-log.service'; // Import the MealLogService to persist meal log data in local storage
+import { MealService } from '../../services/meal.service'; // Import the MealService to log meals to the backend
 
 @Component({
   selector: 'app-search',
@@ -28,7 +29,7 @@ export class SearchComponent {
     Snack: []
   };
 
-  constructor(private edamamService: EdamamApiService, private mealLogService: MealLogService) {}
+  constructor(private edamamService: EdamamApiService, private mealLogService: MealLogService, private mealService: MealService) {}
 
   onSearch(): void {
     if (!this.searchQuery.trim()) return;
@@ -52,19 +53,20 @@ export class SearchComponent {
 
   addToMealLog(item: IFoodItem & { selectedMeal?: string; added?: boolean }): void {
     if (!item.selectedMeal) return;
-
+  
     const meal = item.selectedMeal;
-    const foodEntry = { ...item } as IFoodItem & { selectedMeal?: string; added?: boolean };
-    delete foodEntry.selectedMeal;
-    delete foodEntry.added;
-
+    const foodEntry = { ...item } as IFoodItem;
+    const today = new Date().toISOString().split('T')[0]; // e.g. '2025-04-19'
+  
     this.mealLogService.addFoodToMeal(meal, foodEntry);
-
-
-    // Show confirmation
+  
+    this.mealService.logMeal(today, meal, foodEntry).subscribe({
+      next: () => console.log(`Logged ${meal} to DB`),
+      error: (err) => console.error('Failed to log meal to DB:', err)
+    });
+  
     item.added = true;
     setTimeout(() => (item.added = false), 2000);
-
-    console.log(`Added to ${meal}:`, foodEntry);
   }
+  
 }

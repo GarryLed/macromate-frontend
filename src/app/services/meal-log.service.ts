@@ -1,3 +1,8 @@
+/*
+Local Storage Service for Meal Log
+persists meal log data in local storage
+*/
+
 import { Injectable } from '@angular/core';
 import { IFoodItem } from '../interfaces/food-item';
 

@@ -20,8 +20,8 @@ export class GoalsComponent implements OnInit {
     carbsPercent: 0,
     fatsPercent: 0,
     waterGoal: 0,
-    startingWeight: 0,
-    targetWeight: 0
+    //startingWeight: 0,
+    //targetWeight: 0
   };
 
   currentWeight: number | null = null;

@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { FoodItem } from '../../interfaces/food-item';
 import { GoalService } from '../../services/goal.service';
 import { Goal } from '../../interfaces/goal';
-import { MealLogService } from '../../services/meal-log.service';
+import { MealLogService } from '../../services/meal-log.service'; // meal log service is used to persist meal log data in local storage
+import { MealService } from '../../services/meal.service'; // meal service is used to log meals to the backend
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -14,6 +15,7 @@ import { CommonModule } from '@angular/common';
 export class MealsComponent {
   mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
   mealLogs: { [mealType: string]: FoodItem[] } = {};
+  deletedMessage: string | null = null; // Message to show when a food item is deleted
 
   goal: Goal = {
     calorieGoal: 0,
@@ -21,13 +23,14 @@ export class MealsComponent {
     proteinPercent: 0,
     carbsPercent: 0,
     fatsPercent: 0,
-    startingWeight: 0,
-    targetWeight: 0
+    //startingWeight: 0,
+    //targetWeight: 0
   };
 
   constructor(
-    private goalService: GoalService,
-    private mealLogService: MealLogService
+    private goalService: GoalService, // Injecting the goal service to fetch and save goals
+    private mealLogService: MealLogService, // Injecting the meal log service to persist meal log data in local storage
+    private mealService: MealService // Injecting the meal service to log meals to the backend
   ) {
     // Get goal from backend
     this.goalService.getGoals().subscribe({
@@ -95,9 +98,31 @@ export class MealsComponent {
     return items.reduce((sum, item) => sum + item[macro], 0);
   }
 
+  // Delete food from meal and DB
   deleteFoodFromMeal(meal: string, index: number) {
-    this.mealLogService.deleteFoodFromMeal(meal, index);
+    const foodItem = this.mealLogs[meal][index];
+
+    const confirmDelete = confirm(`Are you sure you want to delete ${foodItem.label} from ${meal}?`); // Ask user for confirmation before deleting
+    if (!confirmDelete) return; // User cancelled the deletion
+
+    const today = new Date().toISOString().split('T')[0];
+  
+    // Remove the food item locally
+    this.mealLogService.deleteFoodFromMeal(meal, index); // use mealLogService to remove food item from local storage
+  
+    // Remove the food item from mongoDB
+    this.mealService.deleteMealEntry(today, meal, foodItem).subscribe({ // use mealService to remove food item from mongoDB
+      next: () => {
+        this.deletedMessage = `Deleted ${foodItem.label} from ${meal}.`; // Show message to user
+        setTimeout(() => this.deletedMessage = null, 3000); // Clear message after 3 seconds
+        console.log(`Deleted ${foodItem.label} from ${meal} in MongoDB.`);
+      },
+      error: (err) => {
+        console.error('Failed to delete food from DB:', err);
+      }
+    });
   }
+  
 
   clearMeal(meal: string) {
     this.mealLogService.clearMeal(meal);
