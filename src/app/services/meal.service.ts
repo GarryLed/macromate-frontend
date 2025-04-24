@@ -20,12 +20,19 @@ export class MealService {
     return this.http.post(this.apiUrl, { date, mealType, foodItem });
   }
 
+  /*
   // delete a meal entry by sending a DELETE request to the backend API
   deleteMealEntry(date: string, mealType: string, foodItem: any) {
-    return this.http.request('delete', 'http://localhost:5050/meals', {
+    return this.http.request('delete', this.apiUrl, {
       body: { date, mealType, foodItem }
     });
   }
+*/
+  // delete a meal entry by ID
+  deleteMealEntryById(id: string) {
+    return this.http.delete(`http://localhost:5050/meals/${id}`);
+  }
+  
   
 }
 

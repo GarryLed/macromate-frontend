@@ -98,30 +98,71 @@ export class MealsComponent {
     return items.reduce((sum, item) => sum + item[macro], 0);
   }
 
+  /*
   // Delete food from meal and DB
   deleteFoodFromMeal(meal: string, index: number) {
+    const foodItem = this.mealLogs[meal][index]; // get the food item to be deleted
+  
+    const confirmDelete = confirm(`Are you sure you want to delete "${foodItem.label}" from ${meal}?`);
+    if (!confirmDelete) return;
+  
+    // delete food item from DB (if _id exists)
+    if (foodItem._id) {
+      this.mealService.deleteMealEntryById(foodItem._id).subscribe({
+        next: () => {
+          console.log(`Deleted ${foodItem.label} from MongoDB`);
+  
+          // here we delete the food item locally once we get confirmation from the DB
+          this.mealLogService.deleteFoodFromMeal(meal, index);
+          this.deletedMessage = `Deleted ${foodItem.label} from ${meal}.`;
+          setTimeout(() => (this.deletedMessage = null), 3000);
+        },
+        error: (err) => {
+          console.error('Failed to delete from DB:', err);
+        }
+      });
+    } else {
+      // If no _id exists, delete it directly from local storage
+      this.mealLogService.deleteFoodFromMeal(meal, index);
+      this.deletedMessage = `Deleted ${foodItem.label} from ${meal} (local only).`;
+      setTimeout(() => (this.deletedMessage = null), 3000);
+    }
+  
+  
+    
+    
+  }
+  */
+
+  deleteFoodFromMeal(meal: string, index: number): void {
     const foodItem = this.mealLogs[meal][index];
-
-    const confirmDelete = confirm(`Are you sure you want to delete ${foodItem.label} from ${meal}?`); // Ask user for confirmation before deleting
-    if (!confirmDelete) return; // User cancelled the deletion
-
-    const today = new Date().toISOString().split('T')[0];
   
-    // Remove the food item locally
-    this.mealLogService.deleteFoodFromMeal(meal, index); // use mealLogService to remove food item from local storage
+    const confirmDelete = confirm(`Are you sure you want to delete "${foodItem.label}" from ${meal}?`);
+    if (!confirmDelete) return;
   
-    // Remove the food item from mongoDB
-    this.mealService.deleteMealEntry(today, meal, foodItem).subscribe({ // use mealService to remove food item from mongoDB
+    // _id-based deletion 
+    if (!foodItem._id) {
+      console.warn(`Cannot delete "${foodItem.label}" — no MongoDB _id found.`);
+      return;
+    }
+  
+    // Backend deletion by id 
+    this.mealService.deleteMealEntryById(foodItem._id).subscribe({
       next: () => {
-        this.deletedMessage = `Deleted ${foodItem.label} from ${meal}.`; // Show message to user
-        setTimeout(() => this.deletedMessage = null, 3000); // Clear message after 3 seconds
-        console.log(`Deleted ${foodItem.label} from ${meal} in MongoDB.`);
+        console.log(`Deleted from DB: ${foodItem._id}`);
+  
+        // Remove the food item from local storage after the DB deletion
+        this.mealLogService.deleteFoodFromMeal(meal, index);
+        this.deletedMessage = `Deleted ${foodItem.label} from ${meal}.`;
+  
+        setTimeout(() => (this.deletedMessage = null), 3000);
       },
       error: (err) => {
-        console.error('Failed to delete food from DB:', err);
+        console.error('Failed to delete from DB:', err);
       }
     });
   }
+  
   
 
   clearMeal(meal: string) {

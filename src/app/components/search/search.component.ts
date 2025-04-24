@@ -51,22 +51,43 @@ export class SearchComponent {
     });
   }
 
+  // Function that adds food item to a selected meal 
   addToMealLog(item: IFoodItem & { selectedMeal?: string; added?: boolean }): void {
     if (!item.selectedMeal) return;
   
     const meal = item.selectedMeal;
-    const foodEntry = { ...item } as IFoodItem;
-    const today = new Date().toISOString().split('T')[0]; // e.g. '2025-04-19'
+    const today = new Date().toISOString().split('T')[0];
   
-    this.mealLogService.addFoodToMeal(meal, foodEntry);
+    // New food entry object to be logged
+    const foodEntry: IFoodItem = {
+      label: item.label,
+      calories: item.calories,
+      protein: item.protein,
+      carbs: item.carbs,
+      fat: item.fat,
+      servingSize: item.servingSize
+    };
   
+    // Log the meal to the backend via the MealService
     this.mealService.logMeal(today, meal, foodEntry).subscribe({
-      next: () => console.log(`Logged ${meal} to DB`),
-      error: (err) => console.error('Failed to log meal to DB:', err)
-    });
+      next: (res: any) => {
+        const insertedId = res.result.insertedId;
   
-    item.added = true;
-    setTimeout(() => (item.added = false), 2000);
+        // Attach _id to food item which will be used to identify it in the meal item 
+        foodEntry._id = insertedId;
+        this.mealLogService.addFoodToMeal(meal, foodEntry); // Add food item to local meal log
+  
+        // Show confirmation that the food item was added
+        item.added = true;
+        setTimeout(() => (item.added = false), 2000);
+  
+        console.log(`Logged and saved to ${meal}`, foodEntry);
+      },
+      error: (err) => {
+        console.error('Failed to log meal to DB:', err);
+      }
+    });
   }
+  
   
 }
