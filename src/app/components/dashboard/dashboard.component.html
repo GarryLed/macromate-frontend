@@ -34,7 +34,16 @@
 
     <!-- MacroProgress section -->
     <div class="col-md-6">
-      <app-macro-progress></app-macro-progress>
+      <app-macro-progress
+        [proteinConsumed]="proteinConsumed"
+        [proteinGoal]="150"
+        [carbsConsumed]="carbsConsumed"
+        [carbsGoal]="250"
+        [fatConsumed]="fatConsumed"
+        [fatGoal]="60"
+></app-macro-progress>
+
+
       
     </div>
 

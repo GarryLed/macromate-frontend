@@ -9,55 +9,73 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./macro-progress.component.scss']
 })
 export class MacroProgressComponent {
-  // Protein 
-  @Input() proteinConsumed: number = 145; // Default protein consumed (will be replaced by user input)
-  @Input() proteinGoal: number = 150; // Default protein goal (will be replaced by user input)
+  //  Macros Inputs (protein, carbs, fats)
+  @Input() proteinConsumed = 0;
+  @Input() proteinGoal = 150;
 
-  // Carbs 
-  @Input() carbsConsumed: number = 144; // Default carbs consumed (will be replaced by user input)
-  @Input() carbsGoal: number = 250; // Default carbs goal (will be replaced by user input)
+  @Input() carbsConsumed = 0;
+  @Input() carbsGoal = 250;
 
-  // Fat
-  @Input() fatConsumed: number = 20; // Default fat consumed (will be replaced by user input)  
-  @Input() fatGoal: number = 60; // Default fat goal (will be replaced by user input)
+  @Input() fatConsumed = 0;
+  @Input() fatGoal = 60;
 
+  // Round results to one decimal place 
+  private roundToOneDecimal(value: number): number {
+    return Math.round(value * 100) / 10;
+  }
 
-  // Protein Progress
+  // Daily Progress Calculations 
+  
+  // Daily Protein progress
   get proteinProgress(): number {
-    return Math.min((this.proteinConsumed / this.proteinGoal) * 100, 100);
+    return this.calculateProgress(this.proteinConsumed, this.proteinGoal);
   }
 
   get proteinProgressLabel(): string {
-    return `${this.proteinConsumed} / ${this.proteinGoal} g`;
+    return this.formatProgressLabel(this.proteinConsumed, this.proteinGoal);
   }
 
   get proteinProgressColor(): string {
-    return this.proteinConsumed > this.proteinGoal ? 'bg-danger' : 'bg-success';
+    return this.getProgressColor(this.proteinConsumed, this.proteinGoal);
   }
-  
-// Carbs Progress
+
+  // Daily Carbs progress
   get carbsProgress(): number {
-    return Math.min((this.carbsConsumed / this.carbsGoal) * 100, 100);
+    return this.calculateProgress(this.carbsConsumed, this.carbsGoal);
   }
 
   get carbsProgressLabel(): string {
-    return `${this.carbsConsumed} / ${this.carbsGoal} g`;
+    return this.formatProgressLabel(this.carbsConsumed, this.carbsGoal);
   }
 
   get carbsProgressColor(): string {
-    return this.carbsConsumed > this.carbsGoal ? 'bg-danger' : 'bg-success';
+    return this.getProgressColor(this.carbsConsumed, this.carbsGoal);
   }
 
-  // Fat Progress
+  // Daily Fat progress 
   get fatProgress(): number {
-    return Math.min((this.fatConsumed / this.fatGoal) * 100, 100);
+    return this.calculateProgress(this.fatConsumed, this.fatGoal);
   }
 
   get fatProgressLabel(): string {
-    return `${this.fatConsumed} / ${this.fatGoal} g`;
+    return this.formatProgressLabel(this.fatConsumed, this.fatGoal);
   }
 
   get fatProgressColor(): string {
-    return this.fatConsumed > this.fatGoal ? 'bg-danger' : 'bg-success';
+    return this.getProgressColor(this.fatConsumed, this.fatGoal);
+  }
+
+  // Methods to calculate progress, format labels, and get colors
+
+  private calculateProgress(consumed: number, goal: number): number {
+    return Math.min((consumed / goal) * 100, 100);
+  }
+
+  private formatProgressLabel(consumed: number, goal: number): string {
+    return `${consumed} / ${goal} g`;
+  }
+
+  private getProgressColor(consumed: number, goal: number): string {
+    return consumed > goal ? 'bg-danger' : 'bg-success';
   }
 }

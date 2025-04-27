@@ -8,7 +8,7 @@ import { WeightGoalService } from '../../services/weight-goal.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './weight-goal.component.html',
- // styleUrls: ['./weight-goal.component.scss']
+  styleUrls: ['./weight-goal.component.scss']
 })
 export class WeightGoalComponent {
 

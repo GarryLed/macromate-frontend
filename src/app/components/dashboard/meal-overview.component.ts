@@ -2,6 +2,8 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
+
+
 @Component({
   selector: 'app-meal-overview',
   standalone: true,
@@ -18,7 +20,7 @@ export class MealOverviewComponent {
   };
 
   logMeal(meal: string): void {
-    // You can hook this into a modal/form later
+   
     console.log(`Add food to ${meal}`);
   }
 

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { MealSummaryService } from '../../services/meal-summary.service';
 
 // Import all dashboard section components
 import { CalorieProgressComponent } from './calorie-progress.component';
@@ -25,8 +27,18 @@ import { QuickLinksComponent } from './quick-links.component';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
-  // placeholder data for the dashboard (will be replaced with actual data from the backend)
-  
+ 
+  proteinConsumed = 0;
+  carbsConsumed = 0;
+  fatConsumed = 0;
+
+  constructor(private mealSummaryService: MealSummaryService) {}
+
+  ngOnInit() {
+    this.mealSummaryService.protein$.subscribe(value => this.proteinConsumed = value);
+    this.mealSummaryService.carbs$.subscribe(value => this.carbsConsumed = value);
+    this.mealSummaryService.fat$.subscribe(value => this.fatConsumed = value);
+  }
 
   // calories section data 
   caloriesConsumed = 1450;

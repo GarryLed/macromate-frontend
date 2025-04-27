@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+
+
 @Component({
   selector: 'app-calorie-progress',
   standalone: true,
@@ -9,8 +11,8 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./calorie-progress.component.scss']
 })
 export class CalorieProgressComponent {
-  @Input() caloriesConsumed: number = 1599;
-  @Input() calorieGoal: number = 2000;
+  @Input() caloriesConsumed: number = 1599; // Default value for testing
+  @Input() calorieGoal: number = 2000; // Default value for testing
 
   get progress(): number {
     return Math.min((this.caloriesConsumed / this.calorieGoal) * 100, 100);
