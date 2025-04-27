@@ -10,7 +10,7 @@ import { GoalService } from '../../services/goal.service';
   standalone: true,
   imports: [CommonModule, FormsModule, WeightGoalComponent],
   templateUrl: './weight-progress.component.html',
- // styleUrls: ['./weight-progress.component.scss']
+  styleUrls: ['./weight-progress.component.scss']
 })
 export class WeightProgressComponent implements OnInit {
   // @Input decorator allows passing data from parent component
@@ -61,5 +61,9 @@ export class WeightProgressComponent implements OnInit {
     return this.goalDirection === 'loss'
       ? `You're ${wgt} kg away from your goal weight`
       : `You need to gain ${wgt} kg to reach your target`;
+  }
+
+  weighIn(): void {
+    console.log('Trigger weigh-in modal (to be implemented)');
   }
 }

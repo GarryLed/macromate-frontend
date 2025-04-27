@@ -10,7 +10,8 @@ import { MealService } from '../../services/meal.service'; // Import the MealSer
   selector: 'app-search',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './search.component.html'
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.scss']
 })
 export class SearchComponent {
   searchQuery: string = '';

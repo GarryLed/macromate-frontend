@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './weight-overview.component.html',
-  //styleUrls: ['./weight-overview.component.scss']
+  styleUrls: ['./weight-overview.component.scss']
 })
 export class WeightOverviewComponent {
   @Input() currentWeight: number = 0;

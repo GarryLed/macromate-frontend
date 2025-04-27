@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule], 
   templateUrl: './calorie-progress.component.html',
- // styleUrls: ['./calorie-progress.component.scss']
+  styleUrls: ['./calorie-progress.component.scss']
 })
 export class CalorieProgressComponent {
   @Input() caloriesConsumed: number = 1599;

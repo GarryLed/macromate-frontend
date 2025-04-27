@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './meal-overview.component.html',
-  //styleUrls: ['./meal-overview.component.scss']
+  styleUrls: ['./meal-overview.component.scss']
 })
 export class MealOverviewComponent {
   @Input() mealsLogged: { [meal: string]: boolean } = {

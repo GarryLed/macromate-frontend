@@ -22,7 +22,7 @@ import { QuickLinksComponent } from './quick-links.component';
     QuickLinksComponent
   ],
   templateUrl: './dashboard.component.html',
-  //styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
   // placeholder data for the dashboard (will be replaced with actual data from the backend)

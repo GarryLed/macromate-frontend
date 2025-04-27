@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './quick-links.component.html',
- //styleUrls: ['./quick-links.component.scss']
+  styleUrls: ['./quick-links.component.scss']
 })
 export class QuickLinksComponent {
   links = [

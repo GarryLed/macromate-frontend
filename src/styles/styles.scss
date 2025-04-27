@@ -1,0 +1,21 @@
+// Import Bootstrap 
+@import 'bootstrap/scss/bootstrap';
+
+// Import custom styles
+@import './variables';
+@import './buttons';
+@import './layout';
+
+// Global styles for the application
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: $background-color;
+    color: $text-color;
+    margin: 0;
+    padding: 0;
+  }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }

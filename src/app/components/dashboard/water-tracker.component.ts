@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './water-tracker.component.html',
- // styleUrls: ['./water-tracker.component.scss']
+  styleUrls: ['./water-tracker.component.scss']
 })
 export class WaterTrackerComponent {
   @Input() waterDrank: number = 0;        

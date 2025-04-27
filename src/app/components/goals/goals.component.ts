@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './goals.component.html',
-  //styleUrls: ['./goals.component.scss'],
+  styleUrls: ['./goals.component.scss'],
   
 })
 export class GoalsComponent implements OnInit {

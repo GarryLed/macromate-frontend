@@ -7,8 +7,7 @@ export interface IGoal {
   carbsPercent: number;
   fatsPercent: number;
   waterGoal: number;
-  //startingWeight?: number;
-  //targetWeight?: number;
+ 
   updatedAt?: string;
 }
 
@@ -19,8 +18,7 @@ export class Goal implements IGoal {
   carbsPercent: number;
   fatsPercent: number;
   waterGoal: number;
-  //startingWeight?: number;
-  //targetWeight?: number;
+ 
   updatedAt?: string;
 
   constructor(
@@ -29,15 +27,14 @@ export class Goal implements IGoal {
     carbsPercent: number,
     fatsPercent: number,
     waterGoal: number,
-    startingWeight?: number,
-    targetWeight?: number
+  
+  
   ) {
     this.calorieGoal = calorieGoal;
     this.proteinPercent = proteinPercent;
     this.carbsPercent = carbsPercent;
     this.fatsPercent = fatsPercent;
     this.waterGoal = waterGoal;
-    //this.startingWeight = startingWeight;
-    //this.targetWeight = targetWeight;
+   
   }
 }

@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './macro-progress.component.html',
-  //styleUrls: ['./MacroProgress.component.scss']
+  styleUrls: ['./macro-progress.component.scss']
 })
 export class MacroProgressComponent {
   // Protein 

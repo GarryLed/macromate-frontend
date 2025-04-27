@@ -6,7 +6,9 @@ import { FoodItem } from '../../interfaces/food-item';
   selector: 'app-calendar',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './calendar.component.html'
+  templateUrl: './calendar.component.html',
+  styleUrls: ['./calendar.component.scss']
+
 })
 export class CalendarComponent {
   selectedDate: string = this.formatToday();

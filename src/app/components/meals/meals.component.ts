@@ -10,7 +10,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-meals',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './meals.component.html'
+  templateUrl: './meals.component.html',
+  styleUrls: ['./meals.component.scss']
 })
 export class MealsComponent {
   mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
@@ -23,8 +24,7 @@ export class MealsComponent {
     proteinPercent: 0,
     carbsPercent: 0,
     fatsPercent: 0,
-    //startingWeight: 0,
-    //targetWeight: 0
+   
   };
 
   constructor(
@@ -41,8 +41,7 @@ export class MealsComponent {
           proteinPercent: goalData.proteinPercent,
           carbsPercent: goalData.carbsPercent,
           fatsPercent: goalData.fatsPercent,
-          //startingWeight: goalData.startingWeight,
-          //targetWeight: goalData.targetWeight
+         
         };
       },
       error: (err) => {
@@ -140,7 +139,7 @@ export class MealsComponent {
     const confirmDelete = confirm(`Are you sure you want to delete "${foodItem.label}" from ${meal}?`);
     if (!confirmDelete) return;
   
-    // _id-based deletion 
+    // _id-based deletion only
     if (!foodItem._id) {
       console.warn(`Cannot delete "${foodItem.label}" — no MongoDB _id found.`);
       return;
