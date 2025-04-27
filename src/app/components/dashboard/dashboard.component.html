@@ -13,6 +13,14 @@
 
     </div>
 
+    <!-- Water intake section -->
+    <div class="col-md-6">
+      <app-water-tracker
+        [waterDrank]="waterDrank"
+        [waterGoal]="waterGoal">
+      </app-water-tracker>
+    </div>
+    
     <!-- Weight section -->
     <div class="col-md-6">
       <app-weight-overview
@@ -22,19 +30,12 @@
 
     </div>
 
-    <!-- Water intake section -->
-    <div class="col-md-6">
-      <app-water-tracker
-        [waterDrank]="waterDrank"
-        [waterGoal]="waterGoal">
-      </app-water-tracker>
-    </div>
+    
 
-    <!-- Achievements section -->
+    <!-- MacroProgress section -->
     <div class="col-md-6">
-      <app-achievements
-        [achievements]="achievements">
-      </app-achievements>
+      <app-macro-progress></app-macro-progress>
+      
     </div>
 
     <!-- Quick Links section -->

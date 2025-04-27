@@ -1,11 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WeightGoalService } from '../../services/weight-goal.service';
+import { FormsModule } from '@angular/forms';
+import { WeightGoalComponent } from '../goals/weight-goal.component';
+import { GoalService } from '../../services/goal.service';
 
 @Component({
   selector: 'app-weight-progress',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, WeightGoalComponent],
   templateUrl: './weight-progress.component.html',
  // styleUrls: ['./weight-progress.component.scss']
 })

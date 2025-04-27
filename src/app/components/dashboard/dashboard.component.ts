@@ -6,7 +6,7 @@ import { CalorieProgressComponent } from './calorie-progress.component';
 import { MealOverviewComponent } from './meal-overview.component';
 import { WeightOverviewComponent } from './weight-overview.component';
 import { WaterTrackerComponent } from './water-tracker.component';
-import { AchievementsComponent } from './achievements.component';
+import { MacroProgressComponent } from './macro-progress.component';
 import { QuickLinksComponent } from './quick-links.component';
 
 @Component({
@@ -18,7 +18,7 @@ import { QuickLinksComponent } from './quick-links.component';
     MealOverviewComponent,
     WeightOverviewComponent,
     WaterTrackerComponent,
-    AchievementsComponent,
+    MacroProgressComponent,
     QuickLinksComponent
   ],
   templateUrl: './dashboard.component.html',
@@ -48,8 +48,8 @@ export class DashboardComponent {
   waterDrank = 1800;
   waterGoal = 3000;
 
-  // achievements section data
-  achievements = [
+  // MacroProgress section data
+  MacroProgress = [
     'Logged 3 Meals',
     'Weighed In',
     'Hit Water Goal'

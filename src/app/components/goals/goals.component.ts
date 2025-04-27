@@ -3,12 +3,12 @@ import { GoalService } from '../../services/goal.service';
 import { Goal } from '../../interfaces/goal';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { WeightGoalComponent } from './weight-goal.component';
+
 
 @Component({
   selector: 'app-goals',
   standalone: true,
-  imports: [CommonModule, FormsModule, WeightGoalComponent],
+  imports: [CommonModule, FormsModule],
   templateUrl: './goals.component.html',
   //styleUrls: ['./goals.component.scss'],
   
@@ -20,8 +20,7 @@ export class GoalsComponent implements OnInit {
     carbsPercent: 0,
     fatsPercent: 0,
     waterGoal: 0,
-    //startingWeight: 0,
-    //targetWeight: 0
+   
   };
 
   currentWeight: number | null = null;

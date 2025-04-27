@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
  // styleUrls: ['./calorie-progress.component.scss']
 })
 export class CalorieProgressComponent {
-  @Input() caloriesConsumed: number = 0;
+  @Input() caloriesConsumed: number = 1599;
   @Input() calorieGoal: number = 2000;
 
   get progress(): number {

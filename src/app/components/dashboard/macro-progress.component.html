@@ -1,0 +1,42 @@
+
+
+
+  <div class="card h-100 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title mb-3">Macro Progress</h5>
+  
+      <!-- Protein Progress -->
+      <label for="proteinGoal" class="form-label">Protein</label>
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="fw-semibold">{{ proteinProgressLabel }}</span>
+        <span class="small text-muted">{{ proteinProgress | number: '1.0-0' }}%</span>
+      </div>
+  
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar {{ proteinProgressColor }}" [style.width.%]="proteinProgress"></div>
+      </div>
+
+      <!-- Carbs Progress -->
+      <label for="proteinGoal" class="form-label">Carbs</label>
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="fw-semibold">{{ carbsProgressLabel }}</span>
+        <span class="small text-muted">{{ carbsProgress | number: '1.0-0' }}%</span>
+      </div>
+  
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar {{ carbsProgressColor }}" [style.width.%]="carbsProgress"></div>
+      </div>
+
+      <!-- Fat Progress -->
+      <label for="proteinGoal" class="form-label">Fats</label>
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="fw-semibold">{{ fatProgressLabel }}</span>
+        <span class="small text-muted">{{ fatProgress | number: '1.0-0' }}%</span>
+      </div>
+  
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar {{ fatProgressColor }}" [style.width.%]="fatProgress"></div>
+      </div>
+    </div>
+  </div>
+  
