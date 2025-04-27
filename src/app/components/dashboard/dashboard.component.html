@@ -3,7 +3,10 @@
 
     <!-- Calories section -->
     <div class="col-md-6">
-      <app-calorie-progress></app-calorie-progress>
+      <app-calorie-progress
+        [caloriesConsumed]="caloriesConsumed"
+        [calorieGoal]="calorieGoal">
+    </app-calorie-progress>
       <!-- will add protein, carbs and fats percentages here -->
     </div>
 

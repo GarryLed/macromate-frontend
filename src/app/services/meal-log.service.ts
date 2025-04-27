@@ -68,4 +68,9 @@ export class MealLogService {
       console.error('Failed to load meal log:', err);
     }
   }
+
+  clearAllMeals(): void {
+    localStorage.removeItem('mealLogs');
+  }
+  
 }

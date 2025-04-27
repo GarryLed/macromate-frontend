@@ -28,23 +28,17 @@ import { QuickLinksComponent } from './quick-links.component';
 })
 export class DashboardComponent {
  
+  // Calorie data 
+  caloriesConsumed = 0; // Default value for testing
+  calorieGoal = 2500; // Default value for testing
+
+
+  // Macro data 
   proteinConsumed = 0;
   carbsConsumed = 0;
   fatConsumed = 0;
 
-  constructor(private mealSummaryService: MealSummaryService) {}
-
-  ngOnInit() {
-    this.mealSummaryService.protein$.subscribe(value => this.proteinConsumed = value);
-    this.mealSummaryService.carbs$.subscribe(value => this.carbsConsumed = value);
-    this.mealSummaryService.fat$.subscribe(value => this.fatConsumed = value);
-  }
-
-  // calories section data 
-  caloriesConsumed = 1450;
-  calorieGoal = 2000;
-
-  // meals section data
+  // === Meals Section Status ===
   mealStatus = {
     Breakfast: true,
     Lunch: false,
@@ -52,18 +46,26 @@ export class DashboardComponent {
     Snack: false
   };
 
-  // weight section data
+  // Weight Section Data 
   currentWeight = 79.6;
   startingWeight = 85.0;
 
-  // water section data
-  waterDrank = 1800;
-  waterGoal = 3000;
+  //  Water Tracker Data 
+  waterDrank = 0;
+  waterGoal = 2000;
 
-  // MacroProgress section data
-  MacroProgress = [
-    'Logged 3 Meals',
-    'Weighed In',
-    'Hit Water Goal'
-  ];
+  constructor(private mealSummaryService: MealSummaryService) {}
+
+  ngOnInit() {
+    this.mealSummaryService.loadFromLocalStorage(); // load the macros from local storage to persist the data 
+
+    // Subscribe to the meal summary service to get the latest values
+    this.mealSummaryService.protein$.subscribe(value => this.proteinConsumed = value);
+    this.mealSummaryService.carbs$.subscribe(value => this.carbsConsumed = value);
+    this.mealSummaryService.fat$.subscribe(value => this.fatConsumed = value);
+
+    // Subscribe to the calorie summary service to get the latest values
+    this.mealSummaryService.calories$.subscribe(value => this.caloriesConsumed = value);
+  }
+
 }

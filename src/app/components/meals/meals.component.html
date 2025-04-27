@@ -1,83 +1,86 @@
-
 <div class="container mt-4">
-    <h3 class="mb-4">Daily Food Log</h3>
+  <h3 class="mb-4">Daily Food Log</h3>
 
-    <!-- Successful delete message (displays after a user deletes a food item form a meal) -->
-    <div *ngIf="deletedMessage" class="alert alert-success alert-dismissible fade show mt-2" role="alert">
-      {{ deletedMessage }}
-    </div>
-    
-  
-    <!-- Meal Sections -->
-    <div *ngFor="let meal of mealTypes" class="mb-5">
-      <h5 class="border-bottom pb-1 text-uppercase">{{ meal }}</h5>
-  
-      <table class="table table-sm table-bordered" *ngIf="mealLogs[meal]?.length; else noMealData">
-        <thead class="table-light">
-          <tr>
-            <th>Food</th>
-            <th>Serving</th>
-            <th>Calories</th>
-            <th>Protein (g)</th>
-            <th>Carbs (g)</th>
-            <th>Fat (g)</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of mealLogs[meal]; let i = index">
-            <td>{{ item.label }}</td>
-            <td>{{ item.servingSize }}</td>
-            <td>{{ item.calories }}</td>
-            <td>{{ item.protein }}</td>
-            <td>{{ item.carbs }}</td>
-            <td>{{ item.fat }}</td>
-            <td>
-              <button class="btn btn-sm btn-danger" (click)="deleteFoodFromMeal(meal, i)">Delete</button>
-            </td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr class="table-secondary fw-bold">
-            <td colspan="2">Meal Total</td>
-            <td>{{ getMealTotal(meal, 'calories') }}</td>
-            <td>{{ getMealTotal(meal, 'protein') }}</td>
-            <td>{{ getMealTotal(meal, 'carbs') }}</td>
-            <td>{{ getMealTotal(meal, 'fat') }}</td>
-            <td></td>
-          </tr>
-        </tfoot>
-      </table>
-  
-      <ng-template #noMealData>
-        <p class="text-muted">No items logged for {{ meal.toLowerCase() }}.</p>
-      </ng-template>
-    </div>
-  
-    <!-- Summary Section -->
-    <div class="card border-primary">
-      <div class="card-body">
-        <h5 class="card-title">Daily Summary</h5>
-        <div class="row text-center">
-          <div class="col">
-            <p class="mb-1 fw-bold">Calories</p>
-            <p>{{ totalCalories }} / {{ goal.calorieGoal}} kcal</p> 
-          </div>
-          <div class="col">
-            <p class="mb-1 fw-bold">Protein</p>
-            <p>{{ totalMacros.protein }} / {{ proteinTarget }} g</p>
-          </div>
-          <div class="col">
-            <p class="mb-1 fw-bold">Carbs</p>
-            <p>{{ totalMacros.carbs }} / {{ carbsTarget }} g</p>
-          </div>
-          <div class="col">
-            <p class="mb-1 fw-bold">Fat</p>
-            <p>{{ totalMacros.fat }} / {{ fatsTarget }} g</p>
-          </div>
+  <!-- Success message after food deletion -->
+  <div *ngIf="deletedMessage" class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+    {{ deletedMessage }}
+  </div>
+
+  <!-- Meal Sections -->
+  <div *ngFor="let meal of mealTypes" class="mb-5">
+    <h5 class="border-bottom pb-1 text-uppercase">{{ meal }}</h5>
+
+    <table class="table table-sm table-bordered" *ngIf="mealLogs[meal]?.length; else noMealData">
+      <thead class="table-light">
+        <tr>
+          <th>Food</th>
+          <th>Serving</th>
+          <th>Calories</th>
+          <th>Protein (g)</th>
+          <th>Carbs (g)</th>
+          <th>Fat (g)</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of mealLogs[meal]; let i = index">
+          <td>{{ item.label }}</td>
+          <td>{{ item.servingSize }}</td>
+          <td>{{ item.calories.toFixed(1) }}</td>
+          <td>{{ item.protein.toFixed(1) }}</td>
+          <td>{{ item.carbs.toFixed(1) }}</td>
+          <td>{{ item.fat.toFixed(1) }}</td>
+          <td>
+            <button class="btn btn-sm btn-danger" (click)="deleteFoodFromMeal(meal, i)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class="table-secondary fw-bold">
+          <td colspan="2">Meal Total</td>
+          <td>{{ getMealTotal(meal, 'calories') | number: '1.0-1' }}</td>
+          <td>{{ getMealTotal(meal, 'protein') | number: '1.0-1' }}</td>
+          <td>{{ getMealTotal(meal, 'carbs') | number: '1.0-1' }}</td>
+          <td>{{ getMealTotal(meal, 'fat') | number: '1.0-1' }}</td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <ng-template #noMealData>
+      <p class="text-muted">No items logged for {{ meal.toLowerCase() }}.</p>
+    </ng-template>
+  </div>
+
+  <!-- Daily Summary Section -->
+  <div class="card border-primary">
+    <div class="card-body">
+      <h5 class="card-title">Daily Summary</h5>
+      <div class="row text-center">
+        <div class="col">
+          <p class="mb-1 fw-bold">Calories</p>
+          <p>{{ totalCalories | number: '1.0-1' }} kcal</p> 
+        </div>
+        <div class="col">
+          <p class="mb-1 fw-bold">Protein</p>
+          <p>{{ totalMacros.protein | number: '1.0-1' }} / {{ proteinTarget | number: '1.0-1' }} g</p>
+        </div>
+        <div class="col">
+          <p class="mb-1 fw-bold">Carbs</p>
+          <p>{{ totalMacros.carbs | number: '1.0-1' }} / {{ carbsTarget | number: '1.0-1' }} g</p>
+        </div>
+        <div class="col">
+          <p class="mb-1 fw-bold">Fat</p>
+          <p>{{ totalMacros.fat | number: '1.0-1' }} / {{ fatsTarget | number: '1.0-1' }} g</p>
         </div>
       </div>
     </div>
   </div>
 
-
+  <div class="text-center mt-4">
+    <button class="btn btn-outline-danger" (click)="clearAllMeals()">
+      Clear All Meals
+    </button>
+  </div>
+  
+</div>

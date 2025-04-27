@@ -18,6 +18,7 @@ export class MealsComponent implements OnInit {
   mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
   mealLogs: { [mealType: string]: FoodItem[] } = {};
   deletedMessage: string | null = null;
+ 
 
   goal: Goal = {
     calorieGoal: 0,
@@ -33,28 +34,6 @@ export class MealsComponent implements OnInit {
     private mealService: MealService,
     private mealSummaryService: MealSummaryService
   ) {}
-
-  ngOnInit(): void {
-    // Load meal logs
-    this.mealLogs = this.mealLogService.getMealLog();
-    this.updateMacroSummary(); // Update macros on load
-
-    // Load goals
-    this.goalService.getGoals().subscribe({
-      next: (goalData: any) => {
-        this.goal = {
-          calorieGoal: goalData.calorieGoal,
-          waterGoal: goalData.waterGoal,
-          proteinPercent: goalData.proteinPercent,
-          carbsPercent: goalData.carbsPercent,
-          fatsPercent: goalData.fatsPercent,
-        };
-      },
-      error: (err) => {
-        console.error('Failed to load goals:', err);
-      }
-    });
-  }
 
   // Macros Calculation 
 
@@ -89,7 +68,7 @@ export class MealsComponent implements OnInit {
   get fatsTarget(): number {
     return this.gramsFromPercent(this.goal.fatsPercent, 9);
   }
-
+  
   private gramsFromPercent(percent: number, kcalPerGram = 4): number {
     return Math.round((percent / 100) * this.goal.calorieGoal / kcalPerGram);
   }
@@ -104,16 +83,56 @@ export class MealsComponent implements OnInit {
 
   private updateMacroSummary(): void {
     const totals = this.totalMacros;
-    this.mealSummaryService.updateMacros(totals.protein, totals.carbs, totals.fat);
+    this.mealSummaryService.updateSummary(2000, totals.protein, totals.carbs, totals.fat);
   }
 
-  // Database Operations
+  ngOnInit(): void {
+    this.loadMealLogs();
+    this.loadGoals();
+  }
 
+  // Load meal logs and goals on initialization
+
+  private loadMealLogs(): void {
+    this.mealLogs = this.mealLogService.getMealLog();
+    this.updateMealSummary();
+  }
+
+  private loadGoals(): void {
+    this.goalService.getGoals().subscribe({
+      next: (goalData: any) => {
+        this.goal = {
+          calorieGoal: goalData.calorieGoal,
+          waterGoal: goalData.waterGoal,
+          proteinPercent: goalData.proteinPercent,
+          carbsPercent: goalData.carbsPercent,
+          fatsPercent: goalData.fatsPercent,
+        };
+      },
+      error: (err) => console.error('Failed to load goals:', err)
+    });
+  }
+
+  // Summary calculation for meals
+
+  private updateMealSummary(): void {
+    const allFoods = this.getAllFoods();
+    const totalCalories = allFoods.reduce((sum, item) => sum + item.calories, 0);
+    const totalProtein = this.sumMacro(allFoods, 'protein');
+    const totalCarbs = this.sumMacro(allFoods, 'carbs');
+    const totalFat = this.sumMacro(allFoods, 'fat');
+
+    this.mealSummaryService.updateSummary(totalCalories, totalProtein, totalCarbs, totalFat);
+  }
+
+  
+  
+
+  // Database functions 
   deleteFoodFromMeal(meal: string, index: number): void {
     const foodItem = this.mealLogs[meal][index];
 
-    const confirmDelete = confirm(`Are you sure you want to delete "${foodItem.label}" from ${meal}?`);
-    if (!confirmDelete) return;
+    if (!confirm(`Are you sure you want to delete "${foodItem.label}" from ${meal}?`)) return;
 
     if (!foodItem._id) {
       console.warn(`Cannot delete "${foodItem.label}" — no MongoDB _id found.`);
@@ -124,21 +143,24 @@ export class MealsComponent implements OnInit {
       next: () => {
         console.log(`Deleted from DB: ${foodItem._id}`);
         this.mealLogService.deleteFoodFromMeal(meal, index);
-        this.mealLogs = this.mealLogService.getMealLog(); // Reload logs after delete
-        this.updateMacroSummary(); // Update macros after delete
-
+        this.loadMealLogs(); // Reload after deletion
         this.deletedMessage = `Deleted ${foodItem.label} from ${meal}.`;
         setTimeout(() => (this.deletedMessage = null), 3000);
       },
-      error: (err) => {
-        console.error('Failed to delete from DB:', err);
-      }
+      error: (err) => console.error('Failed to delete from DB:', err)
     });
   }
 
   clearMeal(meal: string): void {
     this.mealLogService.clearMeal(meal);
-    this.mealLogs = this.mealLogService.getMealLog(); // Reload after clearing
-    this.updateMacroSummary(); // Update macros after clearing
+    this.loadMealLogs(); // Reload after clearing
   }
+
+  clearAllMeals(): void {
+    if (!confirm('Are you sure you want to clear all meals for today?')) return;
+  
+    this.mealLogService.clearAllMeals(); // Clear everything
+    this.loadMealLogs(); // Reload empty meal logs
+  }
+  
 }
