@@ -1,11 +1,19 @@
+
+<div class="container mt-4">
+  <h3>Weight Goal</h3>
+  <div class="card h-100 shadow-sm">
+    <div class="card-body">
+        <app-weight-goal></app-weight-goal>
+    </div>
+  </div>
+</div>
+
 <!-- Weight Progress Card -->
 
 <div class="container mt-4">
   <h3>Weight Progress</h3>
   <div class="card h-100 shadow-sm">
     <div class="card-body">
-      
-  
       <p class="mb-1"><strong>Starting Weight:</strong> {{ startingWeight }} kg</p>
       <p class="mb-1"><strong>Current Weight:</strong> {{ currentWeight }} kg</p>
       <p class="mb-2 text-success"><strong>Weight Lost:</strong> {{ weightLost | number:'1.1-1' }} kg</p>
@@ -28,8 +36,4 @@
     </div>
   </div>
 
-  <div class="container mt-4">
-  
-    <app-weight-goal></app-weight-goal>
-  </div>
   
