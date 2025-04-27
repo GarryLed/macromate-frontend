@@ -1,50 +1,56 @@
-
 <div class="container mt-4">
-  <h3>Weight Goal</h3>
-  <div class="card h-100 shadow-sm">
-    <div class="card-body">
-        <app-weight-goal></app-weight-goal>
+  <h3>Weight Tracker</h3>
+
+  <!-- Weight Form -->
+  <form (ngSubmit)="saveWeight()" class="row g-3 mb-4">
+    <div class="col-md-6">
+      <label for="weightInput" class="form-label">Today's Weight (kg)</label>
+      <input 
+        type="number"
+        class="form-control"
+        id="weightInput"
+        [(ngModel)]="newWeight"
+        name="newWeight"
+        required
+      >
     </div>
+
+    <div class="col-md-6 align-self-end">
+      <button class="btn btn-primary btn-sm" type="submit" [disabled]="!newWeight">
+        Save Weight
+      </button>
+    </div>
+
+    <div class="mt-3" *ngIf="weightSaved">
+      <div class="alert alert-success text-center">
+        Weight saved successfully!
+      </div>
+    </div>
+  </form>
+
+  <!-- Weight Logs -->
+  <div *ngIf="loading" class="text-center mt-4">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && weightLogs.length > 0" class="card">
+    <div class="card-body">
+      <h5 class="card-title text-center">Weight History</h5>
+      <ul class="list-group list-group-flush">
+        <li *ngFor="let log of weightLogs" class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ log.date }}</strong>: {{ log.weight }} kg
+          </div>
+          <button class="btn btn-sm btn-danger" (click)="deleteWeight(log._id!)">Delete</button>
+        </li>
+      </ul>
+      
+    </div>
+  </div>
+
+  <div *ngIf="!loading && weightLogs.length === 0" class="text-muted text-center mt-4">
+    No weight entries yet.
   </div>
 </div>
-
-<!-- Weight Progress Card -->
-
-<div class="container mt-4">
-  <h3>Weight Progress</h3>
-  <div class="card h-100 shadow-sm">
-    <div class="card-body">
-      <p class="mb-1"><strong>Starting Weight:</strong> {{ startingWeight }} kg</p>
-      <p class="mb-1"><strong>Current Weight:</strong> {{ currentWeight }} kg</p>
-      <p class="mb-2 text-success"><strong>Weight Lost:</strong> {{ weightLost | number:'1.1-1' }} kg</p>
-  
-      <ng-container *ngIf="hasTarget">
-        <hr />
-        <p class="mb-1"><strong>Target Weight:</strong> {{ targetWeight }} kg</p>
-        <p class="text-muted small">{{ goalMessage }}</p>
-      </ng-container>
-    </div>
-
-    <!-- button to add current weight -->
-    <div class="col-12 d-flex gap-2">
-      
-      <button class="btn btn-primary btn-sm" (click)="weighIn()">Weigh In</button>
-      
-    </div>
-   
-
-
-
-  </div>
-</div>
-
-<!-- Weight progress chart  -->
-<div class="container mt-4">
-  <h3>Weight Progress Chart</h3>
-  <div class="card h-100 shadow-sm">
-    <div class="card-body">
-      <canvas id="weightProgressChart"></canvas>
-    </div>
-  </div>
-
-  

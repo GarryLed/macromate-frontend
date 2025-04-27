@@ -1,0 +1,26 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { WeightLog } from '../interfaces/weight-log';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class WeightService {
+  private apiUrl = 'http://localhost:5050/weights'; 
+
+  constructor(private http: HttpClient) {}
+
+  getWeightLogs(): Observable<WeightLog[]> {
+    return this.http.get<WeightLog[]>(this.apiUrl);
+  }
+
+  addWeightLog(log: WeightLog): Observable<any> {
+    return this.http.post(this.apiUrl, log);
+  }
+
+  deleteWeightLog(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+  
+}

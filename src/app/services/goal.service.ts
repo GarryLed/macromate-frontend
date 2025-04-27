@@ -3,22 +3,38 @@
 // It uses a singleton pattern to ensure that there is only one instance of the service throughout the application.
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Goal } from '../interfaces/goal'; // Assuming you have a Goal interface defined
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { Goal } from '../interfaces/goal'; 
 
 @Injectable({
   providedIn: 'root'
 })
 export class GoalService {
-  private apiUrl = 'http://localhost:5050/goals';
+  private apiUrl = 'http://localhost:5050/goals'; // Update this when I deploy to the EC2 instance
 
   constructor(private http: HttpClient) {}
 
-  saveGoals(goal: any) {
-    return this.http.post<Goal>(this.apiUrl, goal);
+  // POST new or updated goals
+  saveGoals(goal: Goal): Observable<any> {
+    return this.http.post<any>(this.apiUrl, goal).pipe(
+      tap(_ => console.log('Goals saved successfully.')),
+      catchError(this.handleError)
+    );
   }
 
-  getGoals() {
-    return this.http.get<Goal>(this.apiUrl);
+  // GET existing goals
+  getGoals(): Observable<Goal> {
+    return this.http.get<Goal>(this.apiUrl).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // Error handler
+  private handleError(error: HttpErrorResponse) {
+    console.error('GoalService Error:', error);
+    return throwError(() => new Error('An error occurred while processing your request.'));
   }
 }
+

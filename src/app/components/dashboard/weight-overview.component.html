@@ -3,12 +3,15 @@
       <h5 class="card-title mb-3">Weight Overview</h5>
   
       <div class="mb-2">
-        <p class="mb-1"><strong>Current:</strong> {{ currentWeight }} kg</p>
         <p class="mb-1"><strong>Starting:</strong> {{ startingWeight }} kg</p>
+        <p class="mb-1"><strong>Current:</strong> {{ currentWeight }} kg</p>
         <p class="mb-0" [ngClass]="weightDeltaColor">{{ weightDeltaDisplay }}</p>
       </div>
   
-      <button class="btn btn-primary btn-sm" (click)="weighIn()">Weigh In</button>
+      
+      <div class="d-flex gap-2">
+        <a routerLink="/progress" class="btn btn-primary btn-sm">Weigh In</a>
+      </div>
     </div>
   </div>
   
