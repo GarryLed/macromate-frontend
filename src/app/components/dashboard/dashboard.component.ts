@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MealSummaryService } from '../../services/meal-summary.service';
+import { GoalService } from '../../services/goal.service';
+import { Goal } from '../../interfaces/goal';
 
 // Import all dashboard section components
 import { CalorieProgressComponent } from './calorie-progress.component';
@@ -30,13 +32,18 @@ export class DashboardComponent {
  
   // Calorie data 
   caloriesConsumed = 0; // Default value for testing
-  calorieGoal = 2500; // Default value for testing
+  calorieGoal = 0; // Default value for testing
 
 
   // Macro data 
   proteinConsumed = 0;
   carbsConsumed = 0;
   fatConsumed = 0;
+
+  // Macro goals
+  proteinGoal = 0; // Default value for testing
+  carbsGoal = 0; // Default value for testing
+  fatGoal = 0; // Default value for testing
 
   // === Meals Section Status ===
   mealStatus = {
@@ -52,9 +59,20 @@ export class DashboardComponent {
 
   //  Water Tracker Data 
   waterDrank = 0;
-  waterGoal = 2000;
+  waterGoal = 0;
 
-  constructor(private mealSummaryService: MealSummaryService) {}
+ goal: Goal = {
+    calorieGoal: 0,
+    waterGoal: 0,
+    proteinPercent: 0,
+    carbsPercent: 0,
+    fatsPercent: 0,
+  };
+
+  constructor(
+    private goalService: GoalService,
+    private mealSummaryService: MealSummaryService
+  ) {}
 
   ngOnInit() {
     this.mealSummaryService.loadFromLocalStorage(); // load the macros from local storage to persist the data 
@@ -66,6 +84,18 @@ export class DashboardComponent {
 
     // Subscribe to the calorie summary service to get the latest values
     this.mealSummaryService.calories$.subscribe(value => this.caloriesConsumed = value);
-  }
+
+    // subscribe to nutritian goals to get the latest values
+    this.goalService.getGoals().subscribe(value => this.calorieGoal = value.calorieGoal); 
+    this.goalService.getGoals().subscribe(value => this.waterGoal = value.waterGoal); 
+
+    // These are not working as expected
+    this.goalService.getGoals().subscribe(value => this.proteinGoal = value.proteinPercent); 
+    this.goalService.getGoals().subscribe(value => this.carbsGoal = value.carbsPercent); 
+    this.goalService.getGoals().subscribe(value => this.fatGoal = value.fatsPercent); 
+  } 
+  
+  
+  
 
 }

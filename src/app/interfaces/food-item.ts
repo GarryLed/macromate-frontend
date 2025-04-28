@@ -10,7 +10,7 @@
     fat: number;
     servingSize: string;
     image?: string; 
-    
+    date?: string; // Optional date property for meal logging
   }                                 
 
   export class FoodItem implements IFoodItem {
@@ -22,7 +22,8 @@
     fat: number;
     servingSize: string;
     image?: string;
-
+    
+    date?: string; 
     constructor(label:string, calories:number, protein:number, carbs:number, fat:number, servingSize:string, image?:string) {   
         this.label = label;
         this.calories = calories;
@@ -31,6 +32,8 @@
         this.fat = fat;
         this.servingSize = servingSize;
         this.image = image;
+
+        this.date = new Date().toISOString().split('T')[0]; 
         }
 }
   

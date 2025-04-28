@@ -126,30 +126,42 @@ export class MealsComponent implements OnInit {
   }
 
   
-  
-
-  // Database functions 
   deleteFoodFromMeal(meal: string, index: number): void {
     const foodItem = this.mealLogs[meal][index];
-
-    if (!confirm(`Are you sure you want to delete "${foodItem.label}" from ${meal}?`)) return;
-
+  
+    if (!confirm(`Are you sure you want to delete "${foodItem.label}" from ${meal}?`)) {
+      return;
+    }
+  
     if (!foodItem._id) {
       console.warn(`Cannot delete "${foodItem.label}" — no MongoDB _id found.`);
       return;
     }
-
+  
     this.mealService.deleteMealEntryById(foodItem._id).subscribe({
       next: () => {
         console.log(`Deleted from DB: ${foodItem._id}`);
+  
+        // Remove from local meal log
         this.mealLogService.deleteFoodFromMeal(meal, index);
-        this.loadMealLogs(); // Reload after deletion
+  
+        //Remove from mealLogs object
+        if (this.mealLogs[meal]) {
+          this.mealLogs[meal].splice(index, 1); // Remove from array
+          if (this.mealLogs[meal].length === 0) {
+            delete this.mealLogs[meal]; // Optionally clean up empty meals
+          }
+        }
+  
         this.deletedMessage = `Deleted ${foodItem.label} from ${meal}.`;
         setTimeout(() => (this.deletedMessage = null), 3000);
       },
-      error: (err) => console.error('Failed to delete from DB:', err)
+      error: (err) => {
+        console.error('Failed to delete from DB:', err);
+      }
     });
   }
+  
 
   clearMeal(meal: string): void {
     this.mealLogService.clearMeal(meal);
