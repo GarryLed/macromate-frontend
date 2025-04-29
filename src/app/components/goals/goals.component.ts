@@ -21,21 +21,20 @@ export class GoalsComponent implements OnInit {
     waterGoal: 0,
   };
 
-  currentWeight: number | null = null;
-  targetWeight: number | null = null;
 
   // UI flags for messages
   nutritionSaved = false;
-  weightSaved = false;
+
 
   constructor(private goalService: GoalService) {}
 
+  //  Load goals from local storage and server on component initialization
   ngOnInit(): void {
     this.loadGoalsFromLocalStorage();
     this.fetchGoalsFromServer();
   }
 
-  //  Load goaals
+  //  Fetch Goals from Server and save to Local Storage
 
   private fetchGoalsFromServer(): void {
     this.goalService.getGoals().subscribe({
@@ -48,9 +47,8 @@ export class GoalsComponent implements OnInit {
             fatsPercent: goalData.fatsPercent ?? 0,
             waterGoal: goalData.waterGoal ?? 0
           };
-          this.currentWeight = goalData.startingWeight ?? null;
-          this.targetWeight = goalData.targetWeight ?? null;
-          this.saveGoalsToLocalStorage({ ...this.goal, startingWeight: this.currentWeight, targetWeight: this.targetWeight });
+         
+          this.saveGoalsToLocalStorage({ ...this.goal });
         }
       },
       error: (err) => console.error('Failed to fetch goals:', err)
@@ -69,21 +67,20 @@ export class GoalsComponent implements OnInit {
         fatsPercent: parsed.fatsPercent ?? 0,
         waterGoal: parsed.waterGoal ?? 0,
       };
-      this.currentWeight = parsed.startingWeight ?? null;
-      this.targetWeight = parsed.targetWeight ?? null;
+     
     }
   }
 
+  // Save Goals to Local Storage
   private saveGoalsToLocalStorage(goalData: any): void {
     localStorage.setItem('userGoals', JSON.stringify(goalData));
   }
 
   // Save Nutrition Goals
-
   saveNutritionGoals(): void {
     this.goalService.saveGoals(this.goal).subscribe({
       next: () => {
-        this.saveGoalsToLocalStorage({ ...this.goal, startingWeight: this.currentWeight, targetWeight: this.targetWeight });
+        this.saveGoalsToLocalStorage({ ...this.goal });
         this.nutritionSaved = true;
         setTimeout(() => (this.nutritionSaved = false), 3000);
       },
@@ -91,36 +88,4 @@ export class GoalsComponent implements OnInit {
     });
   }
 
-  // Save Weight Goals 
-
-  saveWeightGoals(): void {
-    if (this.currentWeight === null || this.targetWeight === null) {
-      console.warn('Both starting and target weight are required.');
-      return;
-    }
-  
-    const updatedGoal = {
-      ...this.goal, 
-      startingWeight: this.currentWeight,
-      targetWeight: this.targetWeight
-    };
-  
-    this.goalService.saveGoals(updatedGoal).subscribe({
-      next: () => {
-        this.saveGoalsToLocalStorage(updatedGoal);
-        this.weightSaved = true;
-        setTimeout(() => (this.weightSaved = false), 3000);
-      },
-      error: (err) => console.error('Failed to save weight goals:', err)
-    });
-  }
-  
-  
-
-  // === Clear Weight Goals (Reset) ===
-
-  clearWeightGoals(): void {
-    this.currentWeight = null;
-    this.targetWeight = null;
-  }
 }

@@ -24,6 +24,7 @@ export class WeightProgressComponent implements OnInit {
     this.fetchWeightLogs();
   }
 
+  // Function to fetch weight logs from the server
   fetchWeightLogs(): void {
     this.loading = true;
     this.weightService.getWeightLogs().subscribe({
@@ -38,6 +39,7 @@ export class WeightProgressComponent implements OnInit {
     });
   }
 
+  // Function to save a new weight log entry
   saveWeight(): void {
     if (this.newWeight === null) return;
 
@@ -46,6 +48,7 @@ export class WeightProgressComponent implements OnInit {
       date: new Date().toISOString().split('T')[0] // yyyy-mm-dd format
     };
 
+    // use the weightService to add the new weight log entry
     this.weightService.addWeightLog(entry).subscribe({
       next: () => {
         this.newWeight = null;

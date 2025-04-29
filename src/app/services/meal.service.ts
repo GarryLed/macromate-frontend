@@ -15,17 +15,9 @@ export class MealService {
 
   constructor(private http: HttpClient) {}
 
-  // Log a meal by sending a POST request to the backend API
+  // POST =>  Log a meal by sending a POST request to the backend API
   logMeal(date: string, mealType: string, foodItem: IFoodItem) {
     return this.http.post(this.apiUrl, { date, mealType, foodItem });
-  }
-
-  
-  // delete a meal entry by sending a DELETE request to the backend API
-  deleteMealEntry(date: string, mealType: string, foodItem: any) {
-    return this.http.request('delete', this.apiUrl, {
-      body: { date, mealType, foodItem }
-    });
   }
 
   // delete a meal entry by ID

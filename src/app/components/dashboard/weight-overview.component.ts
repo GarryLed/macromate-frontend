@@ -12,7 +12,5 @@ import { RouterModule } from '@angular/router';
 export class WeightOverviewComponent {
   @Input() currentWeight: number = 0;
 
-  weighIn(): void {
-    console.log('Trigger weigh-in modal (to be implemented)');
-  }
+  
 }

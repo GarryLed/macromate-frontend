@@ -29,5 +29,7 @@ export class WaterIntakeService {
       .filter(intake => intake.date === date)
       .reduce((total, intake) => total + intake.amount, 0);
   }
+
+  // Add database functions here  
 }
 

@@ -22,16 +22,9 @@ export class SearchComponent {
   results: (IFoodItem & { selectedMeal?: string; added?: boolean })[] = [];
   mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
 
-  // Temp meal log for demo purposes
-  dailyMealLog: { [key: string]: IFoodItem[] } = {
-    Breakfast: [],
-    Lunch: [],
-    Dinner: [],
-    Snack: []
-  };
-
   constructor(private edamamService: EdamamApiService, private mealLogService: MealLogService, private mealService: MealService) {}
 
+  // Function that handles the search query and fetches food data from the Edamam API
   onSearch(): void {
     if (!this.searchQuery.trim()) return;
 

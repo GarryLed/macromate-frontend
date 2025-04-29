@@ -14,6 +14,7 @@ export class CalorieProgressComponent {
   @Input() caloriesConsumed: number = 0; // Default value for testing
   @Input() calorieGoal: number = 2500; // Default value for testing
 
+  // GETTERS for progress bar
   get progress(): number {
     return Math.min((this.caloriesConsumed / this.calorieGoal) * 100, 100);
   }

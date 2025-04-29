@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class MealSummaryService {
-  private _calories = new BehaviorSubject<number>(0);
+  private _calories = new BehaviorSubject<number>(0); 
   private _protein = new BehaviorSubject<number>(0);
   private _carbs = new BehaviorSubject<number>(0);
   private _fat = new BehaviorSubject<number>(0);
