@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { WeightService } from '../../services/weight-service.service';
+import { WeightService } from '../../services/weight.service';
 import { WeightLog } from '../../interfaces/weight-log';
 
 @Component({

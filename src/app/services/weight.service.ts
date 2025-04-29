@@ -11,6 +11,10 @@ export class WeightService {
 
   constructor(private http: HttpClient) {}
 
+  getCurrentWeight(): Observable<WeightLog> {
+    return this.http.get<WeightLog>(`${this.apiUrl}/current`); // routes to the current weight endpoint (for most current weight log)
+  }
+
   getWeightLogs(): Observable<WeightLog[]> {
     return this.http.get<WeightLog[]>(this.apiUrl);
   }

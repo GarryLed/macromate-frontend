@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MealSummaryService } from '../../services/meal-summary.service';
 import { GoalService } from '../../services/goal.service';
 import { Goal } from '../../interfaces/goal';
+import { WeightService } from '../../services/weight.service';
 
 // Import all dashboard section components
 import { CalorieProgressComponent } from './calorie-progress.component';
@@ -40,10 +41,7 @@ export class DashboardComponent {
   carbsConsumed = 0;
   fatConsumed = 0;
 
-  // Macro goals
-  proteinGoal = 0; // Default value for testing
-  carbsGoal = 0; // Default value for testing
-  fatGoal = 0; // Default value for testing
+ 
 
   // === Meals Section Status ===
   mealStatus = {
@@ -54,8 +52,8 @@ export class DashboardComponent {
   };
 
   // Weight Section Data 
-  currentWeight = 79.6;
-  startingWeight = 85.0;
+  currentWeight = 0; // Default value for testing
+ 
 
   //  Water Tracker Data 
   waterDrank = 0;
@@ -71,7 +69,8 @@ export class DashboardComponent {
 
   constructor(
     private goalService: GoalService,
-    private mealSummaryService: MealSummaryService
+    private mealSummaryService: MealSummaryService,
+    private weightService: WeightService
   ) {}
 
   ngOnInit() {
@@ -89,13 +88,14 @@ export class DashboardComponent {
     this.goalService.getGoals().subscribe(value => this.calorieGoal = value.calorieGoal); 
     this.goalService.getGoals().subscribe(value => this.waterGoal = value.waterGoal); 
 
-    // These are not working as expected
-    this.goalService.getGoals().subscribe(value => this.proteinGoal = value.proteinPercent); 
-    this.goalService.getGoals().subscribe(value => this.carbsGoal = value.carbsPercent); 
-    this.goalService.getGoals().subscribe(value => this.fatGoal = value.fatsPercent); 
+    // subscribe to weight service to get the latest weight value
+    this.weightService.getCurrentWeight().subscribe(value => {
+      this.currentWeight = value.weight;
+      console.log('Updated current weight:', this.currentWeight); 
+    });
+    
+    
+    
   } 
   
-  
-  
-
 }
