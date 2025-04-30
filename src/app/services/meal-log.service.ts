@@ -5,6 +5,7 @@ persists meal log data in local storage
 
 import { Injectable } from '@angular/core';
 import { IFoodItem } from '../interfaces/food-item';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,65 +13,81 @@ import { IFoodItem } from '../interfaces/food-item';
 export class MealLogService {
   private localStorageKey = 'macromate-meal-log';
 
-  
-  private mealLog: { [meal: string]: IFoodItem[] } = {
+  // Internal state (BehaviorSubject makes it reactive)
+  private mealLogSubject = new BehaviorSubject<{ [meal: string]: IFoodItem[] }>({
     Breakfast: [],
     Lunch: [],
     Dinner: [],
     Snack: []
-  };
+  });
 
   constructor() {
     this.loadFromLocalStorage();
   }
 
-  // get meal log for a specific meal type
-  getMealLog(): { [meal: string]: IFoodItem[] } {
-    return this.mealLog;
+  // Public observable for components to subscribe to
+  getMealLog(): Observable<{ [meal: string]: IFoodItem[] }> {
+    return this.mealLogSubject.asObservable();
   }
 
-  // add food to a specific meal 
+  // Add food to a meal
   addFoodToMeal(meal: string, food: IFoodItem): void {
-    this.mealLog[meal].push(food);
-    this.saveToLocalStorage();
+    const current = this.mealLogSubject.getValue();
+    const updated = { ...current, [meal]: [...current[meal], food] };
+    this.mealLogSubject.next(updated);
+    this.saveToLocalStorage(updated);
   }
 
-  // clear all food from a specific meal
+  // Clear all food from a meal
   clearMeal(meal: string): void {
-    this.mealLog[meal] = [];
-    this.saveToLocalStorage();
+    const current = this.mealLogSubject.getValue();
+    const updated = { ...current, [meal]: [] };
+    this.mealLogSubject.next(updated);
+    this.saveToLocalStorage(updated);
   }
 
-  // delete a specific food item from a meal
+  // Delete a specific food item by index
   deleteFoodFromMeal(meal: string, index: number): void {
-    this.mealLog[meal].splice(index, 1);
-    this.saveToLocalStorage();
+    const current = this.mealLogSubject.getValue();
+    const updatedMeal = [...current[meal]];
+    updatedMeal.splice(index, 1);
+    const updated = { ...current, [meal]: updatedMeal };
+    this.mealLogSubject.next(updated);
+    this.saveToLocalStorage(updated);
   }
 
-  // save the meal log to local storage
-  private saveToLocalStorage(): void {
-    try {
-      const data = JSON.stringify(this.mealLog);
-      localStorage.setItem(this.localStorageKey, data);
-    } catch (err) {
-      console.error('Failed to save meal log:', err);
-    }
-  }
-
-  // load the meal log from local storage
+  // Load meal log from localStorage on service init
   private loadFromLocalStorage(): void {
     try {
       const saved = localStorage.getItem(this.localStorageKey);
       if (saved) {
-        this.mealLog = JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        this.mealLogSubject.next(parsed);
       }
     } catch (err) {
       console.error('Failed to load meal log:', err);
     }
   }
 
-  clearAllMeals(): void {
-    localStorage.removeItem('mealLogs');
+  // Save current meal log to localStorage
+  private saveToLocalStorage(data: { [meal: string]: IFoodItem[] }): void {
+    try {
+      const serialized = JSON.stringify(data);
+      localStorage.setItem(this.localStorageKey, serialized);
+    } catch (err) {
+      console.error('Failed to save meal log:', err);
+    }
   }
-  
+
+  // Clear all meals and reset subject
+  clearAllMeals(): void {
+    const cleared = {
+      Breakfast: [],
+      Lunch: [],
+      Dinner: [],
+      Snack: []
+    };
+    this.mealLogSubject.next(cleared);
+    localStorage.removeItem(this.localStorageKey);
+  }
 }

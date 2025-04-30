@@ -6,6 +6,7 @@ import { Goal } from '../../interfaces/goal';
 import { MealLogService } from '../../services/meal-log.service';
 import { MealService } from '../../services/meal.service';
 import { MealSummaryService } from '../../services/meal-summary.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-meals',
@@ -18,8 +19,8 @@ export class MealsComponent implements OnInit {
   mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
   mealLogs: { [mealType: string]: FoodItem[] } = {};
   deletedMessage: string | null = null;
- 
-// Goals data 
+  private mealLogSub!: Subscription; // Subscription to meal log updates
+
   goal: Goal = {
     calorieGoal: 0,
     waterGoal: 0,
@@ -35,73 +36,21 @@ export class MealsComponent implements OnInit {
     private mealSummaryService: MealSummaryService
   ) {}
 
-  // Macros Calculation 
-
-  getMealTotal(meal: string, macro: keyof FoodItem): number {
-    return this.mealLogs[meal]?.reduce(
-      (sum, item) => sum + (typeof item[macro] === 'number' ? item[macro] : 0),
-      0
-    ) || 0;
-  }
-
-  // GETTER for total calories
-  get totalCalories(): number {
-    return this.getAllFoods().reduce((sum, item) => sum + item.calories, 0);
-  }
-
-  // GETTER for total macros
-  get totalMacros() {
-    const allFoods = this.getAllFoods();
-    return {
-      protein: this.sumMacro(allFoods, 'protein'),
-      carbs: this.sumMacro(allFoods, 'carbs'),
-      fat: this.sumMacro(allFoods, 'fat')
-    };
-  }
-
-  // GETTER for protein targets based on goal percentages
-  get proteinTarget(): number {
-    return this.gramsFromPercent(this.goal.proteinPercent);
-  }
-
-  // GETTER for carbs targets based on goal percentages
-  get carbsTarget(): number {
-    return this.gramsFromPercent(this.goal.carbsPercent);
-  }
-
-  // GETTER for fats targets based on goal percentages
-  get fatsTarget(): number {
-    return this.gramsFromPercent(this.goal.fatsPercent, 9);
-  }
-  
-  // Helper function to convert percentage to grams
-  private gramsFromPercent(percent: number, kcalPerGram = 4): number {
-    return Math.round((percent / 100) * this.goal.calorieGoal / kcalPerGram);
-  }
-
-  // Helper function to get all food items from meal logs
-  private getAllFoods(): FoodItem[] {
-    return Object.values(this.mealLogs).flat();
-  }
-
-  // Helper function to sum macros for all food items
-  private sumMacro(items: FoodItem[], macro: 'protein' | 'carbs' | 'fat'): number {
-    return items.reduce((sum, item) => sum + item[macro], 0);
-  }
-
-// Load meal logs and goals on component initialization
+  // Initialize component and load meal logs and goals
   ngOnInit(): void {
-    this.loadMealLogs();
+    this.subscribeToMealLog();
     this.loadGoals();
   }
 
-  // Load meal logs from the service and update the summary
-  private loadMealLogs(): void {
-    this.mealLogs = this.mealLogService.getMealLog();
-    this.updateMealSummary();
+  // Subscribe to meal service to get meal logs and update the meal summary
+  private subscribeToMealLog(): void {
+    this.mealLogSub = this.mealLogService.getMealLog().subscribe(logs => {
+      this.mealLogs = logs;
+      this.updateMealSummary();
+    });
   }
 
-  // Load goals from the service
+  // Load goals from the goal service and set the goal state
   private loadGoals(): void {
     this.goalService.getGoals().subscribe({
       next: (goalData: any) => {
@@ -117,7 +66,57 @@ export class MealsComponent implements OnInit {
     });
   }
 
-  // Summary calculation for meals
+  // Calculate meal totals for a specific macro (protein, carbs, fat)
+  getMealTotal(meal: string, macro: keyof FoodItem): number {
+    return this.mealLogs[meal]?.reduce(
+      (sum, item) => sum + (typeof item[macro] === 'number' ? item[macro] : 0),
+      0
+    ) || 0;
+  }
+
+  // GETTERS for total calories and macros
+  get totalCalories(): number {
+    return this.getAllFoods().reduce((sum, item) => sum + item.calories, 0);
+  }
+
+  get totalMacros() {
+    const allFoods = this.getAllFoods();
+    return {
+      protein: this.sumMacro(allFoods, 'protein'),
+      carbs: this.sumMacro(allFoods, 'carbs'),
+      fat: this.sumMacro(allFoods, 'fat')
+    };
+  }
+
+  // GETTERS for target macros based on goal percentages
+  get proteinTarget(): number {
+    return this.gramsFromPercent(this.goal.proteinPercent);
+  }
+
+  get carbsTarget(): number {
+    return this.gramsFromPercent(this.goal.carbsPercent);
+  }
+
+  get fatsTarget(): number {
+    return this.gramsFromPercent(this.goal.fatsPercent, 9);
+  }
+
+
+  // Helper fuction to get grams from percentage of calorie goal
+  private gramsFromPercent(percent: number, kcalPerGram = 4): number {
+    return Math.round((percent / 100) * this.goal.calorieGoal / kcalPerGram);
+  }
+
+  private getAllFoods(): FoodItem[] {
+    return Object.values(this.mealLogs).flat();
+  }
+
+  // Helper function to sum macros for all food items
+  private sumMacro(items: FoodItem[], macro: 'protein' | 'carbs' | 'fat'): number {
+    return items.reduce((sum, item) => sum + item[macro], 0);
+  }
+
+  // Update the meal summary in the service
   private updateMealSummary(): void {
     const allFoods = this.getAllFoods();
     const totalCalories = allFoods.reduce((sum, item) => sum + item.calories, 0);
@@ -128,35 +127,24 @@ export class MealsComponent implements OnInit {
     this.mealSummaryService.updateSummary(totalCalories, totalProtein, totalCarbs, totalFat);
   }
 
-  // Delete food item from a specific meal
+  // Delete a food item from a specific meal
   deleteFoodFromMeal(meal: string, index: number): void {
     const foodItem = this.mealLogs[meal][index];
-  
+
     if (!confirm(`Are you sure you want to delete "${foodItem.label}" from ${meal}?`)) {
       return;
     }
-  
+
     if (!foodItem._id) {
       console.warn(`Cannot delete "${foodItem.label}" — no MongoDB _id found.`);
       return;
     }
-  
-    // Delete from MongoDB using the meal service and delete food by ID
+
     this.mealService.deleteMealEntryById(foodItem._id).subscribe({
       next: () => {
         console.log(`Deleted from DB: ${foodItem._id}`);
-  
-        // Remove from local meal log
         this.mealLogService.deleteFoodFromMeal(meal, index);
-  
-        //Remove from mealLogs object
-        if (this.mealLogs[meal]) {
-          this.mealLogs[meal].splice(index, 1); // Remove from array
-          if (this.mealLogs[meal].length === 0) {
-            delete this.mealLogs[meal]; // Optionally clean up empty meals
-          }
-        }
-  
+
         this.deletedMessage = `Deleted ${foodItem.label} from ${meal}.`;
         setTimeout(() => (this.deletedMessage = null), 3000);
       },
@@ -165,13 +153,16 @@ export class MealsComponent implements OnInit {
       }
     });
   }
-  
-  // Clear all food items from a specific meal
+
+  // Clear all meals from the meal log
   clearAllMeals(): void {
     if (!confirm('Are you sure you want to clear all meals for today?')) return;
-  
-    this.mealLogService.clearAllMeals(); // Clear everything
-    this.loadMealLogs(); // Reload empty meal logs
+
+    this.mealLogService.clearAllMeals(); // Will trigger observable update automatically
   }
-  
+
+  // Cleans up the subscription to avoid memory leaks
+  ngOnDestroy(): void {
+    this.mealLogSub?.unsubscribe(); 
+  }
 }

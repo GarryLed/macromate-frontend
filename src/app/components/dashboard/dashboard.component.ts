@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { formatDate } from '@angular/common';
 
-import { MealSummaryService } from '../../services/meal-summary.service';
 import { GoalService } from '../../services/goal.service';
-import { Goal } from '../../interfaces/goal';
+import { MealSummaryService } from '../../services/meal-summary.service';
 import { WeightService } from '../../services/weight.service';
+import { WaterIntakeService } from '../../services/water-intake.service';
+import { MealLogService } from '../../services/meal-log.service';
 
-// Import all dashboard section components
+import { Goal } from '../../interfaces/goal';
+
+// Dashboard section components
 import { CalorieProgressComponent } from './calorie-progress.component';
 import { MealOverviewComponent } from './meal-overview.component';
 import { WeightOverviewComponent } from './weight-overview.component';
@@ -29,37 +33,36 @@ import { QuickLinksComponent } from './quick-links.component';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent {
- 
-  // Calorie data 
-  caloriesConsumed = 0; // Default value for testing
-  calorieGoal = 0; // Default value for testing
+export class DashboardComponent implements OnInit {
+  // Macronutrient data
+  caloriesConsumed = 0;
+  calorieGoal = 0;
 
-
-  // Macro data 
   proteinConsumed = 0;
   carbsConsumed = 0;
   fatConsumed = 0;
 
- 
+  proteinGoal = 0;
+  carbsGoal = 0;
+  fatGoal = 0;
 
-  // === Meals Section Status ===
+  // Weight data
+  currentWeight = 0;
+
+  // Water tracker data 
+  waterDrank = 0;
+  waterGoal = 0;
+  readonly today = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
+
+  // Meal status (based on meal logs to determine if a meal was logged)
   mealStatus = {
-    Breakfast: true,
+    Breakfast: false,
     Lunch: false,
-    Dinner: true,
+    Dinner: false,
     Snack: false
   };
 
-  // Weight Section Data 
-  currentWeight = 0; // Default value for testing
- 
-
-  //  Water Tracker Data 
-  waterDrank = 0;
-  waterGoal = 0;
-
- goal: Goal = {
+  goal: Goal = {
     calorieGoal: 0,
     waterGoal: 0,
     proteinPercent: 0,
@@ -70,32 +73,57 @@ export class DashboardComponent {
   constructor(
     private goalService: GoalService,
     private mealSummaryService: MealSummaryService,
-    private weightService: WeightService
+    private weightService: WeightService,
+    private mealLogService: MealLogService,
+    private waterIntakeService: WaterIntakeService
   ) {}
 
-  ngOnInit() {
-    this.mealSummaryService.loadFromLocalStorage(); // load the macros from local storage to persist the data 
+  ngOnInit(): void {
+    // Load local macros
+    this.mealSummaryService.loadFromLocalStorage();
 
-    // Subscribe to the meal summary service to get the latest values
-    this.mealSummaryService.protein$.subscribe(value => this.proteinConsumed = value);
-    this.mealSummaryService.carbs$.subscribe(value => this.carbsConsumed = value);
-    this.mealSummaryService.fat$.subscribe(value => this.fatConsumed = value);
+    this.mealSummaryService.protein$.subscribe(val => this.proteinConsumed = val);
+    this.mealSummaryService.carbs$.subscribe(val => this.carbsConsumed = val);
+    this.mealSummaryService.fat$.subscribe(val => this.fatConsumed = val);
+    this.mealSummaryService.calories$.subscribe(val => this.caloriesConsumed = val);
 
-    // Subscribe to the calorie summary service to get the latest values
-    this.mealSummaryService.calories$.subscribe(value => this.caloriesConsumed = value);
-
-    // subscribe to nutritian goals to get the latest values
-    this.goalService.getGoals().subscribe(value => this.calorieGoal = value.calorieGoal); 
-    this.goalService.getGoals().subscribe(value => this.waterGoal = value.waterGoal); 
-
-    // subscribe to weight service to get the latest weight value
-    this.weightService.getCurrentWeight().subscribe(value => {
-      this.currentWeight = value.weight;
-      console.log('Updated current weight:', this.currentWeight); 
+    // Load goals (calorie and water)
+    this.goalService.getGoals().subscribe(goal => {
+      this.calorieGoal = goal.calorieGoal;
+      this.waterGoal = goal.waterGoal;
     });
-    
-    
-    
-  } 
-  
+
+    // Load current weight from DB
+    this.weightService.getCurrentWeight().subscribe({
+      next: weightLog => {
+        this.currentWeight = weightLog?.weight || 0;
+        console.log('Current weight:', this.currentWeight);
+      },
+      error: err => console.error('Weight fetch error:', err)
+    });
+
+    // Load today's total water from DB
+    this.waterIntakeService.getTotalForDate(this.today).subscribe({
+      next: data => this.waterDrank = data.total,
+      error: err => console.error('Water fetch error:', err)
+    });
+
+    // Load meal status toggles
+    this.mealLogService.getMealLog().subscribe(log => {
+      this.mealStatus.Breakfast = log['Breakfast'].length > 0;
+      this.mealStatus.Lunch = log['Lunch'].length > 0;
+      this.mealStatus.Dinner = log['Dinner'].length > 0;
+      this.mealStatus.Snack = log['Snack'].length > 0;
+    });
+  }
+
+  // Called when user adds water from WaterTrackerComponent
+  logWater(amount: number): void {
+    const intake = { date: this.today, amount };
+
+    this.waterIntakeService.addWaterIntake(intake).subscribe({
+      next: () => this.waterDrank += amount,
+      error: err => console.error('Failed to log water:', err)
+    });
+  }
 }

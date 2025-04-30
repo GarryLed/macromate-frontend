@@ -10,22 +10,22 @@
       <app-calorie-progress
         [caloriesConsumed]="caloriesConsumed"
         [calorieGoal]="calorieGoal">
-    </app-calorie-progress>
-      <!-- will add protein, carbs and fats percentages here -->
+      </app-calorie-progress>
     </div>
 
     <!-- Meals Logged section -->
     <div class="col-md-6">
       <app-meal-overview [mealsLogged]="mealStatus"></app-meal-overview>
-
     </div>
 
     <!-- Water intake section -->
     <div class="col-md-6">
       <app-water-tracker
         [waterDrank]="waterDrank"
-        [waterGoal]="waterGoal">
-      </app-water-tracker>
+        [waterGoal]="waterGoal"
+        (onAddWater)="logWater($event)">
+</app-water-tracker>
+
     </div>
     
     <!-- Weight section -->
@@ -34,22 +34,14 @@
         [currentWeight]="currentWeight"></app-weight-overview>
     </div>
 
-    
-
     <!-- MacroProgress section -->
     <div class="col-md-6">
-      <app-macro-progress
-        
-></app-macro-progress>
-
-
-      
+      <app-macro-progress></app-macro-progress>
     </div>
 
     <!-- Quick Links section -->
     <div class="col-md-6">
       <app-quick-links></app-quick-links>
     </div>
-
   </div>
 </div>
