@@ -12,10 +12,15 @@ import { Output, EventEmitter } from '@angular/core';
 export class WaterTrackerComponent {
   @Input() waterDrank: number = 0;        
   @Input() waterGoal: number = 0;      
-  readonly glassSize = 250;               // One glass = 250 ml
+  
+  // Event emitter for adding water
+  @Output() onAddWater = new EventEmitter<number>(); 
+ 
+  
+  readonly glassSize = 250;  // One glass = 250 ml
 
-  @Output() onAddWater = new EventEmitter<number>(); // Event emitter to notify parent component
 
+  // GETTER for progress percentage
   get progress(): number {
     return Math.min((this.waterDrank / this.waterGoal) * 100, 100);
   }
@@ -28,6 +33,8 @@ export class WaterTrackerComponent {
       this.onAddWater.emit(amount); // Emit the amount of water added
     }
   }
+
+ 
   
 }
 

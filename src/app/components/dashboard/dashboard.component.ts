@@ -54,7 +54,7 @@ export class DashboardComponent implements OnInit {
   waterGoal = 0;
   readonly today = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
 
-  // Meal status (based on meal logs to determine if a meal was logged)
+  // Meal status (based on meal logs to 
   mealStatus = {
     Breakfast: false,
     Lunch: false,
