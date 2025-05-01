@@ -10,7 +10,7 @@
     fat: number;
     servingSize: string;
     image?: string; 
-    date?: string; // Optional date property for meal logging
+    date?: string; 
   }                                 
 
   export class FoodItem implements IFoodItem {
