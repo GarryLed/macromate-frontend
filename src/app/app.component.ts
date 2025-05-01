@@ -14,5 +14,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     
   `,
 })
-export class AppComponent {}
+export class AppComponent {
+  title = 'MacroMate';
+  // Add any other properties or methods you need for your app component
+}
 
