@@ -18,9 +18,6 @@ export interface IWeightLog {
         this.date = date;
         this.weight = weight;
        
-    }
-
-  
-      
+    }   
   }
   

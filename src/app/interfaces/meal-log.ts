@@ -1,5 +1,5 @@
 // This file defines the structure of a meal log entry in the application.
- // It includes properties for the date, meal type, food items consumed, and nutritional totals.
+
  import { IFoodItem } from './food-item';
  
  export interface IMealLog {
@@ -13,14 +13,7 @@
    totalFat: number;
  }
  
- /*
- export interface MealLog {
-    Breakfast: any[]; // Replace 'any' with the appropriate type if known
-    Lunch: any[];
-    Dinner: any[];
-    Snack: any[];
- }  
-*/
+
  export class MealLog implements IMealLog {
    _id?: string;
    date: string;
