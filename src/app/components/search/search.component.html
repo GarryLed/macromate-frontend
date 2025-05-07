@@ -8,7 +8,7 @@
       <button class="btn btn-primary" type="submit">Search</button>
     </form>
   
-    <!-- Loading Spinner -->
+    <!-- Loading Spinner for better ui -->
     <div *ngIf="loading" class="text-center my-3">
       <div class="spinner-border text-primary" role="status"></div>
       <p class="mt-2">Searching...</p>
@@ -35,6 +35,7 @@
               <li class="list-group-item">Fat: {{ item.fat }}g</li>
             </ul>
   
+            <!-- User selects a meal they want to add the food to-->
             <div class="mb-2">
                 <label for="mealSelect-{{ item.label }}" class="form-label small">Add to:</label>
                 <select class="form-select form-select-sm" [(ngModel)]="item.selectedMeal" name="mealSelect-{{ item.label }}">
@@ -43,12 +44,14 @@
                 </select>
               </div>
               
+              <!-- Button to add food to meal log -->
               <button class="btn btn-success btn-sm w-100"
                       [disabled]="!item.selectedMeal"
                       (click)="addToMealLog(item)">
                 Add to Log
               </button>
               
+              <!-- Success message after adding to meal log for better UI -->
               <div class="text-success mt-2 text-center small" *ngIf="item.added">
                 Added to {{ item.selectedMeal }}!
               </div>
@@ -58,7 +61,7 @@
       </div>
     </div>
   
-    <!-- No Results -->
+    <!-- No Results message if no results are found -->
     <div *ngIf="!loading && results.length === 0 && searchPerformed" class="text-muted">
       No foods found for "{{ searchQuery }}".
     </div>

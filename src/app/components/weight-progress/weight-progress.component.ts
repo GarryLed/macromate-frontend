@@ -15,9 +15,12 @@ export class WeightProgressComponent implements OnInit {
   weightLogs: WeightLog[] = [];
   newWeight: number | null = null;
 
+  // Flag to indicate if the weight was saved successfully
   weightSaved = false;
+  // Flag to indicate if the data is being loaded
   loading = false;
 
+  // Constructor to inject the WeightService
   constructor(private weightService: WeightService) {}
 
   ngOnInit(): void {
@@ -27,6 +30,7 @@ export class WeightProgressComponent implements OnInit {
   // Function to fetch weight logs from the server
   fetchWeightLogs(): void {
     this.loading = true;
+    // use the weightService to get the weight logs and subscribe to the observable
     this.weightService.getWeightLogs().subscribe({
       next: (logs) => {
         this.weightLogs = logs.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());

@@ -2,15 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { formatDate } from '@angular/common';
 
+// Import services
 import { GoalService } from '../../services/goal.service';
 import { MealSummaryService } from '../../services/meal-summary.service';
 import { WeightService } from '../../services/weight.service';
 import { WaterIntakeService } from '../../services/water-intake.service';
 import { MealLogService } from '../../services/meal-log.service';
 
+// Import interface
 import { Goal } from '../../interfaces/goal';
 
-// Dashboard section components
+// Dashboard section for child components
 import { CalorieProgressComponent } from './calorie-progress.component';
 import { MealOverviewComponent } from './meal-overview.component';
 import { WeightOverviewComponent } from './weight-overview.component';
@@ -52,9 +54,11 @@ export class DashboardComponent implements OnInit {
   // Water tracker data 
   waterDrank = 0;
   waterGoal = 0;
-  readonly today = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
+  readonly today = formatDate(new Date(), 'yyyy-MM-dd', 'en-US'); // Today's date in YYYY-MM-DD format (keeps it consistent with the DB)
 
-  // Meal status (based on meal logs to 
+  // Meal status (based on meal logs for the day)
+  // This will be used to show a "yes" if  the meal has been logged, or a "-" if not
+  // defaults to false (not logged)
   mealStatus = {
     Breakfast: false,
     Lunch: false,
@@ -62,6 +66,7 @@ export class DashboardComponent implements OnInit {
     Snack: false
   };
 
+  // Goal object to hold the user's goals
   goal: Goal = {
     calorieGoal: 0,
     waterGoal: 0,
@@ -70,6 +75,8 @@ export class DashboardComponent implements OnInit {
     fatsPercent: 0,
   };
 
+  // Constructor to inject services
+  // These services will be used to fetch data from the backend and update the UI
   constructor(
     private goalService: GoalService,
     private mealSummaryService: MealSummaryService,
@@ -79,7 +86,7 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Load local macros
+    // Load local macros (persist state across sessions)
     this.mealSummaryService.loadFromLocalStorage();
 
     this.mealSummaryService.protein$.subscribe(val => this.proteinConsumed = val);

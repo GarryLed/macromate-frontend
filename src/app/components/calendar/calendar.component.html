@@ -1,7 +1,7 @@
 <div class="container mt-4">
   <h3>Daily Summary</h3>
 
-  <!-- Date Picker -->
+  <!-- Date Picker (lets the user pick a date for the data to be displayed)-->
   <div class="mb-4">
     <label for="date" class="form-label">Select a Date</label>
     <input type="date" id="date" class="form-control" [(ngModel)]="selectedDate" (change)="loadDayData()">
@@ -11,13 +11,15 @@
   <div class="row g-3">
     <div class="col-md-4">
       <div class="card text-center">
+        <!-- Calories summary-->
         <div class="card-body">
           <h5>Calories</h5>
-          <p class="fw-bold text-danger">{{ summary.totalCalories }} kcal</p>
+          <p class="fw-bold text-danger">{{ summary.totalCalories }} kcal</p> 
         </div>
       </div>
     </div>
 
+    <!-- Macros summary-->
     <div class="col-md-4" *ngFor="let macro of summary.macros">
       <div class="card text-center">
         <div class="card-body">
@@ -27,6 +29,7 @@
       </div>
     </div>
 
+    <!-- Water and Weight summary-->
     <div class="col-md-4">
       <div class="card text-center">
         <div class="card-body">

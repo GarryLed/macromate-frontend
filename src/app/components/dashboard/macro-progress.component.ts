@@ -55,10 +55,7 @@ export class MacroProgressComponent {
       });
     }
     
-
-   
-  
-
+    // GETTERS for macro targets based on the percentage of the calorie goal
     get proteinTarget(): number {
       return this.roundToOneDecimal(this.gramsFromPercent(this.goal.proteinPercent));
     }
