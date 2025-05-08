@@ -28,13 +28,13 @@ export class GoalsComponent implements OnInit {
 
   constructor(private goalService: GoalService) {}
 
-  //  Load goals from local storage and server on component initialization
+  //  ngOnInit used here to load data when the component is initialized
   ngOnInit(): void {
-    this.loadGoalsFromLocalStorage();
+   
     this.fetchGoalsFromServer();
   }
 
-  //  Fetch Goals from Server and save to Local Storage
+  //  Fetch Goals from Server 
 
   private fetchGoalsFromServer(): void {
     this.goalService.getGoals().subscribe({
@@ -48,39 +48,20 @@ export class GoalsComponent implements OnInit {
             waterGoal: goalData.waterGoal ?? 0
           };
          
-          this.saveGoalsToLocalStorage({ ...this.goal });
+       
         }
       },
       error: (err) => console.error('Failed to fetch goals:', err)
     });
   }
 
-  // Load and Save Goals to Local Storage 
-  private loadGoalsFromLocalStorage(): void {
-    const data = localStorage.getItem('userGoals');
-    if (data) {
-      const parsed = JSON.parse(data);
-      this.goal = {
-        calorieGoal: parsed.calorieGoal ?? 0,
-        proteinPercent: parsed.proteinPercent ?? 0,
-        carbsPercent: parsed.carbsPercent ?? 0,
-        fatsPercent: parsed.fatsPercent ?? 0,
-        waterGoal: parsed.waterGoal ?? 0,
-      };
-     
-    }
-  }
 
-  // Save Goals to Local Storage
-  private saveGoalsToLocalStorage(goalData: any): void {
-    localStorage.setItem('userGoals', JSON.stringify(goalData));
-  }
+  
 
   // Save Nutrition Goals
   saveNutritionGoals(): void {
     this.goalService.saveGoals(this.goal).subscribe({
       next: () => {
-        this.saveGoalsToLocalStorage({ ...this.goal });
         this.nutritionSaved = true;
         setTimeout(() => (this.nutritionSaved = false), 3000);
       },

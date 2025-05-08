@@ -5,11 +5,14 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class MealSummaryService {
+  // private writable streams for macros and calories
+  // BehaviorSubject is used to hold the current value and emit it to subscribers
   private _calories = new BehaviorSubject<number>(0); 
   private _protein = new BehaviorSubject<number>(0);
   private _carbs = new BehaviorSubject<number>(0);
   private _fat = new BehaviorSubject<number>(0);
 
+  // public readable streams for macros and calories
   calories$ = this._calories.asObservable();
   protein$ = this._protein.asObservable();
   carbs$ = this._carbs.asObservable();
@@ -22,20 +25,5 @@ export class MealSummaryService {
     this._carbs.next(carbs);
     this._fat.next(fat);
 
-    // Save calories and macros to localStorage
-    localStorage.setItem('macroSummary', JSON.stringify({ calories, protein, carbs, fat }));
-  }
-
-  // Load saved summary from localStorage 
-  loadFromLocalStorage(): void {
-    const data = localStorage.getItem('macroSummary');
-    if (data) {
-      const { calories, protein, carbs, fat } = JSON.parse(data);
-
-      this._calories.next(calories ?? 0);
-      this._protein.next(protein ?? 0);
-      this._carbs.next(carbs ?? 0);
-      this._fat.next(fat ?? 0);
-    }
   }
 }

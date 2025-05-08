@@ -87,8 +87,6 @@ export class DashboardComponent implements OnInit {
 
   // ngOnInit to load data when the component is initialized
   ngOnInit(): void {
-    // Load local macros (persist state across sessions)
-    this.mealSummaryService.loadFromLocalStorage();
 
     // Subscribe to meal summary service to get the current macros consumed 
     this.mealSummaryService.protein$.subscribe(value => this.proteinConsumed = value);
