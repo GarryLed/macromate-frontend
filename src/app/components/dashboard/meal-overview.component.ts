@@ -24,8 +24,5 @@ export class MealOverviewComponent {
     console.log(`Add food to ${meal}`);
   }
 
-  onAddFood(): void {
-    console.log('Manual food entry');
-  }
 }
 

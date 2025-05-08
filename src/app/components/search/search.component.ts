@@ -22,6 +22,7 @@ export class SearchComponent {
   results: (IFoodItem & { selectedMeal?: string; added?: boolean })[] = [];
   mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
 
+  // Constructor to inject the EdamamApiService and MealLogService and MealService
   constructor(private edamamService: EdamamApiService, private mealLogService: MealLogService, private mealService: MealService) {}
 
   // Function that handles the search query and fetches food data from the Edamam API
@@ -32,10 +33,11 @@ export class SearchComponent {
     this.error = null;
     this.searchPerformed = true;
 
-    this.edamamService.searchFood(this.searchQuery).subscribe({
+    // Call the Edamam API service to search for food items based on the query 
+    this.edamamService.searchFood(this.searchQuery).subscribe({ // call the searchFood function from the EdamamApiService and subscribe to the observable
       next: (items) => {
-        this.results = items.map(item => ({ ...item }));
-        this.loading = false;
+        this.results = items.map(item => ({ ...item })); // Map the items to include additional properties for selectedMeal 
+        this.loading = false; // Set loading to false after fetching the data
       },
       error: (err) => {
         console.error('Edamam API error:', err);

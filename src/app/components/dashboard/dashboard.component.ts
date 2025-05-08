@@ -85,22 +85,24 @@ export class DashboardComponent implements OnInit {
     private waterIntakeService: WaterIntakeService
   ) {}
 
+  // ngOnInit to load data when the component is initialized
   ngOnInit(): void {
     // Load local macros (persist state across sessions)
     this.mealSummaryService.loadFromLocalStorage();
 
-    this.mealSummaryService.protein$.subscribe(val => this.proteinConsumed = val);
-    this.mealSummaryService.carbs$.subscribe(val => this.carbsConsumed = val);
-    this.mealSummaryService.fat$.subscribe(val => this.fatConsumed = val);
-    this.mealSummaryService.calories$.subscribe(val => this.caloriesConsumed = val);
+    // Subscribe to meal summary service to get the current macros consumed 
+    this.mealSummaryService.protein$.subscribe(value => this.proteinConsumed = value);
+    this.mealSummaryService.carbs$.subscribe(value => this.carbsConsumed = value);
+    this.mealSummaryService.fat$.subscribe(value => this.fatConsumed = value);
+    this.mealSummaryService.calories$.subscribe(value => this.caloriesConsumed = value);
 
-    // Load goals (calorie and water)
+    // Load goals (calorie and water) from the goal service
     this.goalService.getGoals().subscribe(goal => {
       this.calorieGoal = goal.calorieGoal;
       this.waterGoal = goal.waterGoal;
     });
 
-    // Load current weight from DB
+    // Load current weight from the weight service
     this.weightService.getCurrentWeight().subscribe({
       next: weightLog => {
         this.currentWeight = weightLog?.weight || 0;
@@ -109,13 +111,13 @@ export class DashboardComponent implements OnInit {
       error: err => console.error('Weight fetch error:', err)
     });
 
-    // Load today's total water from DB
+    // Load today's total water from the water intake service
     this.waterIntakeService.getTotalForDate(this.today).subscribe({
       next: data => this.waterDrank = data.total,
       error: err => console.error('Water fetch error:', err)
     });
 
-    // Load meal status toggles
+    // Load meal status toggles from the meal log service
     this.mealLogService.getMealLog().subscribe(log => {
       this.mealStatus.Breakfast = log['Breakfast'].length > 0;
       this.mealStatus.Lunch = log['Lunch'].length > 0;
@@ -128,6 +130,7 @@ export class DashboardComponent implements OnInit {
   logWater(amount: number): void {
     const intake = { date: this.today, amount };
 
+    // Call the water intake service to log the water intake
     this.waterIntakeService.addWaterIntake(intake).subscribe({
       next: () => this.waterDrank += amount,
       error: err => console.error('Failed to log water:', err)

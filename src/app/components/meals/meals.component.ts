@@ -21,6 +21,7 @@ export class MealsComponent implements OnInit {
   deletedMessage: string | null = null;
   private mealLogSub!: Subscription; // Subscription to meal log updates
 
+  // goal object to hold the user's goals
   goal: Goal = {
     calorieGoal: 0,
     waterGoal: 0,
@@ -29,6 +30,7 @@ export class MealsComponent implements OnInit {
     fatsPercent: 0,
   };
 
+  // Constructor to inject services
   constructor(
     private goalService: GoalService,
     private mealLogService: MealLogService,
@@ -131,21 +133,26 @@ export class MealsComponent implements OnInit {
   deleteFoodFromMeal(meal: string, index: number): void {
     const foodItem = this.mealLogs[meal][index];
 
+    // ask user for confirmation before deleting
     if (!confirm(`Are you sure you want to delete "${foodItem.label}" from ${meal}?`)) {
       return;
     }
 
+    // Check if foodItem has a valid MongoDB _id
+    // If not, log a warning and return
     if (!foodItem._id) {
       console.warn(`Cannot delete "${foodItem.label}" — no MongoDB _id found.`);
       return;
     }
 
+    // Call the meal service to delete the food item from the database
+    // and then update the meal log in the service
     this.mealService.deleteMealEntryById(foodItem._id).subscribe({
       next: () => {
-        console.log(`Deleted from DB: ${foodItem._id}`);
+        console.log(`Deleted from DB: ${foodItem._id}`); // confirm deletion in the console
         this.mealLogService.deleteFoodFromMeal(meal, index);
 
-        this.deletedMessage = `Deleted ${foodItem.label} from ${meal}.`;
+        this.deletedMessage = `Deleted ${foodItem.label} from ${meal}.`; // Show a message to the user
         setTimeout(() => (this.deletedMessage = null), 3000);
       },
       error: (err) => {

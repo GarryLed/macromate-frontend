@@ -10,7 +10,7 @@ import { IWaterIntake } from '../interfaces/water-intake';
   providedIn: 'root'
 })
 export class WaterIntakeService {
-  private apiUrl = 'http://localhost:5050/water'; // backend route
+  private apiUrl = 'http://localhost:5050/water'; // Update this when I deploy to the EC2 instance
 
   constructor(private http: HttpClient) {}
 

@@ -7,7 +7,7 @@ import { WeightLog } from '../interfaces/weight-log';
   providedIn: 'root'
 })
 export class WeightService {
-  private apiUrl = 'http://localhost:5050/weights'; 
+  private apiUrl = 'http://localhost:5050/weights'; // Update this when I deploy to the EC2 instance
 
   constructor(private http: HttpClient) {}
 
@@ -22,13 +22,14 @@ export class WeightService {
   }
 
   // POST a new weight log
-  addWeightLog(log: WeightLog): Observable<any> {
-    return this.http.post(this.apiUrl, log);
+  addWeightLog(log: WeightLog): Observable<WeightLog> {
+    return this.http.post<WeightLog>(this.apiUrl, log);
   }
 
   // DELETE a weight log entry by ID
-  deleteWeightLog(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  // void is used here because the delete operation does not return any data
+  deleteWeightLog(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
   
 }

@@ -13,6 +13,7 @@ import { CalendarService } from '../../services/calendar-day.service';
 export class CalendarComponent implements OnInit {
   selectedDate: string = this.getToday(); // formatted date string (YYYY-MM-DD) for the selected date, defaulting to today
 
+  // summary object to hold the data for the selected date 
   summary = {
     totalCalories: 0,
     macros: [
@@ -36,13 +37,16 @@ export class CalendarComponent implements OnInit {
     // call the getDaySummary function from the calendar service and subscribe to the observable
     this.calendarService.getDaySummary(this.selectedDate).subscribe({
       next: (data) => {
-        this.summary.totalCalories = data.totalCalories || 0; // assign totalCalories from the response data and set a default value of 0 for error handling
+        console.log('Full day summary response:', data);
+
+        this.summary.totalCalories = data.calories || 0; // assign totalCalories from the response data and set a default value of 0 for error handling
+        console.log(this.summary.totalCalories)
         this.summary.macros = [ // assign macros from the response data
-          { label: 'Protein', amount: data.totalProtein || 0 },
-          { label: 'Carbs', amount: data.totalCarbs || 0 },
-          { label: 'Fats', amount: data.totalFat || 0 },
+          { label: 'Protein', amount: data.macros?.protein || 0 },
+          { label: 'Carbs', amount: data.macros?.carbs || 0 },
+          { label: 'Fats', amount: data.macros?.fats || 0 },
         ];
-        this.summary.water = data.water || 0; // assign water from the response data and set a default value of 0 for error handling
+        this.summary.water = data.waterIntake || 0; // assign water from the response data and set a default value of 0 for error handling
         this.summary.weight = data.weight || 0; // assign weight from the response data and set a default value of 0 for error handling
       },
       error: (err) => {

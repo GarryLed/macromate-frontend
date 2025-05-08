@@ -25,7 +25,7 @@ export class WaterTrackerComponent {
     return Math.min((this.waterDrank / this.waterGoal) * 100, 100);
   }
 
-  // Function to add a glass of water
+  // Function to add a glass of water (button click handler)
   addGlass(): void {
     const remaining = this.waterGoal - this.waterDrank;
     const amount = remaining >= this.glassSize ? this.glassSize : remaining;

@@ -7,7 +7,7 @@ import { IFoodItem } from '../interfaces/food-item';
   providedIn: 'root'
 })
 export class EdamamApiService {
-  private _siteURL = "http://localhost:5050/foods"; // Proxy to Express API
+  private _siteURL = "http://localhost:5050/foods"; // Proxy to Express API (// Update this when I deploy to the EC2 instance)
 
   constructor(private _http: HttpClient) {}
 

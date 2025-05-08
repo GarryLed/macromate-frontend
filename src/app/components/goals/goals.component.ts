@@ -12,7 +12,7 @@ import { Goal } from '../../interfaces/goal';
   styleUrls: ['./goals.component.scss'],
 })
 export class GoalsComponent implements OnInit {
-  //  Goals state for demonstration purposes 
+  //  Goals object to hold the user's goals
   goal: Goal = {
     calorieGoal: 0,
     proteinPercent: 0,

@@ -11,7 +11,7 @@ import { IFoodItem } from '../interfaces/food-item';
   providedIn: 'root'
 })
 export class MealService {
-  private apiUrl = 'http://localhost:5050/meals';
+  private apiUrl = 'http://localhost:5050/meals'; // Update this when I deploy to the EC2 instance
 
   constructor(private http: HttpClient) {}
 
@@ -22,7 +22,7 @@ export class MealService {
 
   // delete a meal entry by ID
   deleteMealEntryById(id: string) {
-    return this.http.delete(`http://localhost:5050/meals/${id}`);
+    return this.http.delete(`http://localhost:5050/meals/${id}`); // Update this when I deploy to the EC2 instance
   }
   
   

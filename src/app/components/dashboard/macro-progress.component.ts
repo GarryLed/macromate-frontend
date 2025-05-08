@@ -35,9 +35,10 @@ export class MacroProgressComponent {
       private mealSummaryService: MealSummaryService
     ) {}
 
+    // ngOnInit used here to load data when the component is initialized
     ngOnInit() {
       this.mealSummaryService.loadFromLocalStorage();
-    
+    // Subscribe to the meal summary service to get the consumed macros
       this.mealSummaryService.protein$.subscribe(value => this.proteinConsumed = value);
       this.mealSummaryService.carbs$.subscribe(value => this.carbsConsumed = value);
       this.mealSummaryService.fat$.subscribe(value => this.fatConsumed = value);
